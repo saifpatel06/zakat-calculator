@@ -50,8 +50,11 @@ const UniversalZakatWizard = () => {
   const silverVal = assets.silverWeight * prices.silver;
   const totalAssets = assets.cash + assets.crypto + assets.pension + assets.inventory + assets.investments + assets.rentalIncome + goldVal + silverVal;
   const netWealth = totalAssets - liabilities;
+  
+  // Logic for Nisab Thresholds
   const nisabThreshold = nisabType === 'gold' ? prices.gold * 87.48 : prices.silver * 612.36;
-  const zakatDue = netWealth >= nisabThreshold ? netWealth * 0.025 : 0;
+  const isZakatMandatory = netWealth >= nisabThreshold;
+  const zakatDue = isZakatMandatory ? netWealth * 0.025 : 0;
   const totalFitrana = fitrCount * fitrRate;
 
   const updateAsset = (key, val) => setAssets(prev => ({ ...prev, [key]: parseFloat(val) || 0 }));
@@ -61,6 +64,7 @@ const UniversalZakatWizard = () => {
     const text = `--- Zakat Report 2026 ---
 Total Wealth: ${formatINR(totalAssets)}
 Net Zakatable: ${formatINR(netWealth)}
+Status: ${isZakatMandatory ? 'Mandatory' : 'Below Nisab'}
 Zakat Due (2.5%): ${formatINR(zakatDue)}
 Fitrana Due: ${formatINR(totalFitrana)}
 -------------------------
@@ -193,19 +197,67 @@ Generated via Universal Zakat Wizard`;
 
                   <div className="d-flex gap-3">
                     <button className="btn btn-light border px-4" onClick={() => setStep(1)}>Back</button>
-                    <button className={`btn flex-grow-1 ${styles.primaryBtn}`} onClick={() => setStep(3)}>Next: Liabilities</button>
+                    <button className={`btn flex-grow-1 ${styles.primaryBtn}`} onClick={() => setStep(3)}>Next: Review & Debt</button>
                   </div>
                 </div>
               )}
 
-              {/* STEP 3: LIABILITIES */}
+              {/* STEP 3: LIABILITIES & REVIEW BREAKDOWN */}
               {step === 3 && (
                 <div className="animate-fade">
-                  <h5 className="fw-bold mb-4 text-success">3. Liabilities & Debts</h5>
-                  <div className="mb-4">
-                    <label className={styles.formLabel}>Short-term Debts & Bills (₹)</label>
-                    <input type="number" value={liabilities || ''} className={`form-control ${styles.inputField}`} onChange={(e) => setLiabilities(parseFloat(e.target.value) || 0)} />
+                  <h5 className="fw-bold mb-3 text-success">3. Review & Liabilities</h5>
+                  
+                  <div className="table-responsive mb-4 rounded border shadow-sm" style={{fontSize: '0.85rem'}}>
+                    <table className="table table-sm table-borderless mb-0">
+                      <thead className="bg-light">
+                        <tr>
+                          <th className="ps-3 py-2">Asset Type</th>
+                          <th className="text-end pe-3 py-2">Value</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr className="border-bottom">
+                          <td className="ps-3 pt-2 text-muted small uppercase fw-bold" colSpan="2">Personal Assets</td>
+                        </tr>
+                        <tr>
+                          <td className="ps-4">Liquid Cash & Crypto</td>
+                          <td className="text-end pe-3">{formatINR(assets.cash + assets.crypto)}</td>
+                        </tr>
+                        <tr>
+                          <td className="ps-4">Gold ({assets.goldWeight}g @ {assets.goldPurity}K)</td>
+                          <td className="text-end pe-3">{formatINR(goldVal)}</td>
+                        </tr>
+                        <tr>
+                          <td className="ps-4">Silver ({assets.silverWeight}g)</td>
+                          <td className="text-end pe-3">{formatINR(silverVal)}</td>
+                        </tr>
+                        <tr className="border-bottom">
+                          <td className="ps-3 pt-3 text-muted small uppercase fw-bold" colSpan="2">Professional</td>
+                        </tr>
+                        <tr>
+                          <td className="ps-4">Investments & PF</td>
+                          <td className="text-end pe-3">{formatINR(assets.investments + assets.pension)}</td>
+                        </tr>
+                        <tr>
+                          <td className="ps-4">Business & Rental</td>
+                          <td className="text-end pe-3">{formatINR(assets.inventory + assets.rentalIncome)}</td>
+                        </tr>
+                      </tbody>
+                      <tfoot className="bg-light">
+                        <tr>
+                          <th className="ps-3 py-2">Gross Assets</th>
+                          <th className="text-end pe-3 py-2 text-success">{formatINR(totalAssets)}</th>
+                        </tr>
+                      </tfoot>
+                    </table>
                   </div>
+
+                  <div className="mb-4">
+                    <label className={styles.formLabel}>Subtract Short-term Debts (₹)</label>
+                    <input type="number" value={liabilities || ''} className={`form-control ${styles.inputField}`} onChange={(e) => setLiabilities(parseFloat(e.target.value) || 0)} />
+                    <p className="small text-muted mt-2 text-end">Net Zakatable: <strong>{formatINR(netWealth)}</strong></p>
+                  </div>
+                  
                   <div className="d-flex gap-3">
                     <button className="btn btn-light border px-4" onClick={() => setStep(2)}>Back</button>
                     <button className={`btn flex-grow-1 ${styles.primaryBtn}`} onClick={() => setStep(4)}>Final Calculation</button>
@@ -213,13 +265,24 @@ Generated via Universal Zakat Wizard`;
                 </div>
               )}
 
-              {/* STEP 4: FINAL RESULTS & RESET */}
+              {/* STEP 4: FINAL RESULTS & NISAB ALERT */}
               {step === 4 && (
                 <div className="text-center animate-fade">
                   <h4 className="fw-bold mb-2">Purification Summary</h4>
+                  
                   <div className={styles.resultBox}>
                     <span className="text-muted small text-uppercase fw-bold">Total Zakat Due</span>
                     <h1 className="display-4 fw-bold text-success mt-2">{formatINR(zakatDue)}</h1>
+                    
+                    {/* THRESHOLD ALERT BANNER */}
+                    <div className={`mt-3 p-2 rounded small fw-bold ${isZakatMandatory ? 'bg-success-light text-success' : 'bg-warning-light text-dark'}`} style={{fontSize: '11px', border: '1px solid currentColor'}}>
+                      {isZakatMandatory ? (
+                        <span>✓ Your wealth exceeds the Nisab ({formatINR(nisabThreshold)}). Zakat is mandatory.</span>
+                      ) : (
+                        <span>ℹ Below Nisab threshold ({formatINR(nisabThreshold)}). Payment is voluntary (Sadaqah).</span>
+                      )}
+                    </div>
+
                     <button onClick={copyToClipboard} className="btn btn-sm btn-outline-success mt-3 rounded-pill px-3">
                       Copy Report 📋
                     </button>
@@ -260,7 +323,6 @@ Generated via Universal Zakat Wizard`;
                     </div>
                   </div>
 
-                  {/* Reset Logic linked here */}
                   <button className="btn btn-dark w-100 py-3 fw-bold rounded-pill shadow mt-4" onClick={resetAll}>New Calculation</button>
                 </div>
               )}
@@ -282,7 +344,6 @@ Generated via Universal Zakat Wizard`;
               <div className="text-md-end">
                 <span className="small text-muted d-block fw-bold">Live Asset Total</span>
                 <span className="h5 fw-bold text-success mb-0">{formatINR(totalAssets)}</span>
-                <div className="small text-muted mt-1" style={{fontSize: '11px'}}>Market volatility: <span className="text-success">Low</span></div>
               </div>
             </div>
 
