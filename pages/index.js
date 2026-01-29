@@ -8,7 +8,7 @@ const UniversalZakatWizard = () => {
   const [prices, setPrices] = useState({ gold: 16195, silver: 375 });
   const [activeTooltip, setActiveTooltip] = useState(null);
   
-  // Feature: Market Trend Mock Data (Simulating 30-day history)
+  // Market Trend Mock Data
   const [marketTrend] = useState({ gold: 'stable', silver: 'increasing', change: '+1.2%' });
 
   const [fitrCount, setFitrCount] = useState(0);
@@ -21,13 +21,25 @@ const UniversalZakatWizard = () => {
   
   const [liabilities, setLiabilities] = useState(0);
 
+  // Reset function to clear all inputs
+  const resetAll = () => {
+    setAssets({
+      cash: 0, crypto: 0, goldWeight: 0, goldPurity: 22,
+      silverWeight: 0, pension: 0, inventory: 0, investments: 0, rentalIncome: 0 
+    });
+    setLiabilities(0);
+    setFitrCount(0);
+    setStep(1);
+    setActiveTooltip(null);
+  };
+
   useEffect(() => {
     const fetchRates = async () => {
       try {
         const res = await fetch('/api/metal-prices');
         const data = await res.json();
         setPrices({ gold: data.gold, silver: data.silver });
-      } catch (e) { console.log("Using Fallback"); }
+      } catch (e) { console.log("Using Fallback Prices"); }
     };
     fetchRates();
   }, []);
@@ -44,6 +56,18 @@ const UniversalZakatWizard = () => {
 
   const updateAsset = (key, val) => setAssets(prev => ({ ...prev, [key]: parseFloat(val) || 0 }));
   const formatINR = (num) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(num);
+
+  const copyToClipboard = () => {
+    const text = `--- Zakat Report 2026 ---
+Total Wealth: ${formatINR(totalAssets)}
+Net Zakatable: ${formatINR(netWealth)}
+Zakat Due (2.5%): ${formatINR(zakatDue)}
+Fitrana Due: ${formatINR(totalFitrana)}
+-------------------------
+Generated via Universal Zakat Wizard`;
+    navigator.clipboard.writeText(text);
+    alert("Summary copied to clipboard!");
+  };
 
   return (
     <div className="container-fluid min-vh-100 bg-light py-5">
@@ -63,7 +87,7 @@ const UniversalZakatWizard = () => {
                 <div className={styles.progressFill} style={{ width: `${(step / 4) * 100}%` }}></div>
               </div>
 
-              {/* STEP 1: PERSONAL WEALTH */}
+              {/* STEP 1: PERSONAL ASSETS */}
               {step === 1 && (
                 <div className="animate-fade">
                   <div className="d-flex justify-content-between align-items-center mb-4">
@@ -71,7 +95,6 @@ const UniversalZakatWizard = () => {
                     <span className={styles.badgeCustom}>Step 1/4</span>
                   </div>
                   
-                  {/* Market Trend Alert */}
                   <div className="alert alert-info border-0 py-2 px-3 mb-4 d-flex align-items-center" style={{fontSize: '0.8rem'}}>
                     <span className="me-2">📈</span>
                     <span><strong>Market Trend:</strong> Gold is {marketTrend.gold} today. Silver is {marketTrend.change} this week.</span>
@@ -175,7 +198,7 @@ const UniversalZakatWizard = () => {
                 </div>
               )}
 
-              {/* STEP 3 & 4 (Remaining logic kept same) */}
+              {/* STEP 3: LIABILITIES */}
               {step === 3 && (
                 <div className="animate-fade">
                   <h5 className="fw-bold mb-4 text-success">3. Liabilities & Debts</h5>
@@ -190,23 +213,60 @@ const UniversalZakatWizard = () => {
                 </div>
               )}
 
+              {/* STEP 4: FINAL RESULTS & RESET */}
               {step === 4 && (
                 <div className="text-center animate-fade">
                   <h4 className="fw-bold mb-2">Purification Summary</h4>
                   <div className={styles.resultBox}>
                     <span className="text-muted small text-uppercase fw-bold">Total Zakat Due</span>
                     <h1 className="display-4 fw-bold text-success mt-2">{formatINR(zakatDue)}</h1>
+                    <button onClick={copyToClipboard} className="btn btn-sm btn-outline-success mt-3 rounded-pill px-3">
+                      Copy Report 📋
+                    </button>
                   </div>
+                  
                   <div className="row g-2 mb-4">
                     <div className="col-6"><div className="p-3 bg-light rounded shadow-sm"><small className="text-muted d-block" style={{fontSize: '10px'}}>Net Wealth</small><span className="fw-bold">{formatINR(netWealth)}</span></div></div>
                     <div className="col-6"><div className="p-3 bg-light rounded shadow-sm"><small className="text-muted d-block" style={{fontSize: '10px'}}>Fitrana Due</small><span className="fw-bold">{formatINR(totalFitrana)}</span></div></div>
                   </div>
-                  <button className="btn btn-dark w-100 py-3 fw-bold rounded-pill shadow" onClick={() => setStep(1)}>New Calculation</button>
+
+                  <div className="text-start mt-4">
+                    <h6 className="fw-bold small text-uppercase text-muted border-bottom pb-2">Where to Pay? (Recommended)</h6>
+                    <div className="row g-2 mt-1">
+                      <div className="col-6">
+                        <div className="p-2 border rounded small bg-white shadow-sm h-100">
+                          🏠 <strong>Needy Kin</strong><br/>
+                          <span className="text-muted" style={{fontSize: '10px'}}>Siblings or relatives who aren't your dependents.</span>
+                        </div>
+                      </div>
+                      <div className="col-6">
+                        <div className="p-2 border rounded small bg-white shadow-sm h-100">
+                          🛠️ <strong>Livelihood</strong><br/>
+                          <span className="text-muted" style={{fontSize: '10px'}}>Tools (sewing machines, carts) to make them self-reliant.</span>
+                        </div>
+                      </div>
+                      <div className="col-6 mt-2">
+                        <div className="p-2 border rounded small bg-white shadow-sm h-100">
+                          🎓 <strong>Skill-Building</strong><br/>
+                          <span className="text-muted" style={{fontSize: '10px'}}>Student fees, laptops, or vocational training costs.</span>
+                        </div>
+                      </div>
+                      <div className="col-6 mt-2">
+                        <div className="p-2 border rounded small bg-white shadow-sm h-100">
+                          🏥 <strong>Medical Debt</strong><br/>
+                          <span className="text-muted" style={{fontSize: '10px'}}>Directly paying hospital bills for poor patients.</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Reset Logic linked here */}
+                  <button className="btn btn-dark w-100 py-3 fw-bold rounded-pill shadow mt-4" onClick={resetAll}>New Calculation</button>
                 </div>
               )}
             </div>
 
-            {/* PERSISTENT FOOTER WITH MARKET TREND */}
+            {/* PERSISTENT FOOTER */}
             <div className="card-footer bg-light p-4 d-flex flex-wrap justify-content-between align-items-center">
               <div className="mb-3 mb-md-0">
                 <span className="small text-muted d-block mb-1 fw-bold">Threshold Base</span>
