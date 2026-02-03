@@ -1,0 +1,32 @@
+.patternContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.pattern {
+  width: 100%;
+  height: 100%;
+  color: #059669;
+  animation: patternFloat 60s ease-in-out infinite;
+}
+
+@keyframes patternFloat {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(2%, 2%) rotate(1deg);
+  }
+  50% {
+    transform: translate(-2%, 2%) rotate(-1deg);
+  }
+  75% {
+    transform: translate(2%, -2%) rotate(1deg);
+  }
+}

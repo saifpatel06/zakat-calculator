@@ -2,6 +2,25 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import styles from '../../styles/Zakat.module.css';
 
+const numberToWords = (num) => {
+  if (!num || num <= 0) return "";
+  const a = ['', 'One ', 'Two ', 'Three ', 'Four ', 'Five ', 'Six ', 'Seven ', 'Eight ', 'Nine ', 'Ten ', 'Eleven ', 'Twelve ', 'Thirteen ', 'Fourteen ', 'Fifteen ', 'Sixteen ', 'Seventeen ', 'Eighteen ', 'Nineteen '];
+  const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+  const makeWords = (n) => {
+    if (n < 20) return a[Math.floor(n)];
+    if (n < 100) return b[Math.floor(n / 10)] + (n % 10 !== 0 ? " " + a[n % 10] : "");
+    if (n < 1000) return a[Math.floor(n / 100)] + "Hundred " + (n % 100 !== 0 ? makeWords(n % 100) : "");
+    if (n < 100000) return makeWords(Math.floor(n / 1000)) + "Thousand " + (n % 1000 !== 0 ? makeWords(n % 1000) : "");
+    if (n < 10000000) return makeWords(Math.floor(n / 100000)) + "Lakh " + (n % 100000 !== 0 ? makeWords(n % 100000) : "");
+    
+    // Fix: This allows the logic to scale infinitely above 1 Crore
+    return makeWords(Math.floor(n / 10000000)) + "Crore " + (n % 10000000 !== 0 ? makeWords(n % 10000000) : "");
+  };
+
+  return makeWords(Math.floor(num)).trim() + " Rupees Only";
+};
+
 const UniversalZakatWizard = () => {
   const [step, setStep] = useState(1);
   const [nisabType, setNisabType] = useState('silver');
@@ -49,10 +68,10 @@ const UniversalZakatWizard = () => {
   const goldVal = assets.goldWeight * prices.gold * (assets.goldPurity / 24);
   const silverVal = assets.silverWeight * prices.silver;
   const totalAssets = assets.cash + assets.crypto + assets.pension + assets.inventory + assets.investments + assets.rentalIncome + goldVal + silverVal;
-  const netWealth = totalAssets - liabilities;
+  const netWealth = Math.max(0, totalAssets - liabilities);
   
   // Logic for Nisab Thresholds
-  const nisabThreshold = nisabType === 'gold' ? prices.gold * 87.48 : prices.silver * 612.36;
+  const nisabThreshold = nisabType === 'gold' ? prices.gold * 87.48 : prices.silver * 612.32;
   const isZakatMandatory = netWealth >= nisabThreshold;
   const zakatDue = isZakatMandatory ? netWealth * 0.025 : 0;
   const totalFitrana = fitrCount * fitrRate;
@@ -106,26 +125,31 @@ const UniversalZakatWizard = () => {
                   
                   <div className="row">
                     <div className="col-md-6 mb-3">
-                      <label className={styles.formLabel}>Cash & Bank Balance (₹)</label>
+                      <label className={styles.formLabel}>Cash in Hand & Bank (₹)</label>
                       <input type="number" value={assets.cash || ''} className={`form-control ${styles.inputField}`} onChange={(e) => updateAsset('cash', e.target.value)} placeholder="0" />
+                      {assets.cash > 0 && <div className="text-muted extra-small mt-1 italic" style={{fontSize: '0.7rem'}}>✨ {numberToWords(assets.cash)}</div>}
                     </div>
                     <div className="col-md-6 mb-3 position-relative">
                       <label className={styles.formLabel}>
-                        Crypto & E-Wallets (₹) 
+                        Digital Assets (Crypto/Wallets) (₹) 
                         <span className="ms-2 badge rounded-pill bg-light text-dark border cursor-pointer" onClick={() => toggleTooltip('crypto')}>?</span>
                       </label>
                       <input type="number" value={assets.crypto || ''} className={`form-control ${styles.inputField}`} onChange={(e) => updateAsset('crypto', e.target.value)} placeholder="0" />
-                      {activeTooltip === 'crypto' && <div className="small text-success mt-1 fw-bold animate-fade">Valuation based on today's spot price.</div>}
+                      {assets.crypto > 0 && <div className="text-muted extra-small mt-1 italic" style={{fontSize: '0.7rem'}}>✨ {numberToWords(assets.crypto)}</div>}
+                      {activeTooltip === 'crypto' && <div className="small text-success mt-1 fw-bold animate-fade">Rule: Valuation based on today's spot price.</div>}
                     </div>
                   </div>
 
-                  <div className="row mt-2">
-                    <div className="col-4 mb-3">
+                  <div className="row g-3 mt-2">
+                    <div className="col-12 col-md-4">
                       <label className={styles.formLabel}>Gold (g)</label>
                       <input type="number" value={assets.goldWeight || ''} className={`form-control ${styles.inputField}`} onChange={(e) => updateAsset('goldWeight', e.target.value)} placeholder="0g" />
+                      <span className="text-muted" style={{fontSize: '0.65rem'}}>
+                        ≈ {(assets.goldWeight / 11.66).toFixed(2)} Tola
+                      </span>
                     </div>
-                    <div className="col-4 mb-3">
-                      <label className={styles.formLabel}>Purity</label>
+                    <div className="col-12 col-md-4">
+                      <label className={styles.formLabel}>Gold Purity (Karat)</label>
                       <select className={`form-select ${styles.inputField}`} value={assets.goldPurity} onChange={(e) => updateAsset('goldPurity', e.target.value)}>
                         <option value="24">24K</option>
                         <option value="22">22K</option>
@@ -133,9 +157,12 @@ const UniversalZakatWizard = () => {
                         <option value="18">18K</option>
                       </select>
                     </div>
-                    <div className="col-4 mb-3">
+                    <div className="col-12 col-md-4">
                       <label className={styles.formLabel}>Silver (g)</label>
                       <input type="number" value={assets.silverWeight || ''} className={`form-control ${styles.inputField}`} onChange={(e) => updateAsset('silverWeight', e.target.value)} placeholder="0g" />
+                      <span className="text-muted d-block mt-1" style={{fontSize: '0.65rem'}}>
+                        ≈ {(assets.silverWeight / 11.66).toFixed(2)} Tola
+                      </span>
                     </div>
                   </div>
 
@@ -167,32 +194,73 @@ const UniversalZakatWizard = () => {
                   </div>
 
                   <div className="mb-3">
-                    <label className={styles.formLabel}>Business Inventory / Stock (₹)</label>
+                    <label className={styles.formLabel}>Trade Stock (Selling Price) (₹)
+                      <span 
+                        className="ms-2 badge rounded-pill bg-light text-dark border cursor-pointer" 
+                        onClick={() => toggleTooltip('inventory')}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        ?
+                      </span>
+                    </label>
                     <input type="number" value={assets.inventory || ''} className={`form-control ${styles.inputField}`} onChange={(e) => updateAsset('inventory', e.target.value)} />
+                    {assets.inventory > 0 && <div className="text-muted extra-small mt-1 italic" style={{fontSize: '0.7rem'}}>✨ {numberToWords(assets.inventory)}</div>}
+
+                    {activeTooltip === 'inventory' && (
+                      <div className="small text-success mt-1 fw-bold animate-fade">
+                        Rule: Calculation Rule: Value items at their current Retail Selling Price (Market Value), not the original cost price.
+                      </div>
+                    )}
                   </div>
 
                   <div className="row">
                     <div className="col-md-6 mb-3">
                       <label className={styles.formLabel}>
-                        Vested Stocks (₹)
+                        Shares & Mutual Funds (₹)
                         <span className="ms-2 badge rounded-pill bg-light text-dark border cursor-pointer" onClick={() => toggleTooltip('rsu')}>?</span>
                       </label>
                       <input type="number" value={assets.investments || ''} className={`form-control ${styles.inputField}`} onChange={(e) => updateAsset('investments', e.target.value)} />
-                      {activeTooltip === 'rsu' && <div className="small text-success mt-1 fw-bold">Market value of vested shares.</div>}
+                      {assets.investments > 0 && <div className="text-muted extra-small mt-1 italic" style={{fontSize: '0.7rem'}}>✨ {numberToWords(assets.investments)}</div>}
+                      {activeTooltip === 'rsu' && <div className="small text-success mt-1 fw-bold">Rule: Market value of vested shares.</div>}
                     </div>
                     <div className="col-md-6 mb-3">
                       <label className={styles.formLabel}>
-                        Withdrawable PF (₹)
+                        Provident Fund & LIC (Paid) (₹)
                         <span className="ms-2 badge rounded-pill bg-light text-dark border cursor-pointer" onClick={() => toggleTooltip('pf')}>?</span>
                       </label>
                       <input type="number" value={assets.pension || ''} className={`form-control ${styles.inputField}`} onChange={(e) => updateAsset('pension', e.target.value)} />
-                      {activeTooltip === 'pf' && <div className="small text-success mt-1 fw-bold">Liquidable portion of your Provident Fund.</div>}
+                      {assets.pension > 0 && <div className="text-muted extra-small mt-1 italic" style={{fontSize: '0.7rem'}}>✨ {numberToWords(assets.pension)}</div>}
+                      {activeTooltip === 'pf' && (
+                        <div className="p-2 mt-1 rounded border bg-white animate-fade" style={{fontSize: '0.75rem', borderLeft: '4px solid #059669'}}>
+                          <p className="mb-1"><strong>Should you include this?</strong></p>
+                          <ul className="ps-3 mb-0">
+                            <li><strong>YES:</strong> If you can withdraw this money today (even as a loan).</li>
+                            <li><strong>NO:</strong> If the money is strictly locked until retirement.</li>
+                          </ul>
+                          <div className="mt-2 text-muted italic">
+                            *If locked, you will pay Zakat for the year you eventually withdraw it.
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 
                   <div className="mb-4">
-                    <label className={styles.formLabel}>Saved Rental Income (₹)</label>
+                    <label className={styles.formLabel}>Net Rental Savings (₹)
+                      <span 
+                        className="ms-2 badge rounded-pill bg-light text-dark border cursor-pointer" 
+                        onClick={() => toggleTooltip('rental')}
+                      >
+                        ?
+                      </span>
+                    </label>
                     <input type="number" value={assets.rentalIncome || ''} className={`form-control ${styles.inputField}`} onChange={(e) => updateAsset('rentalIncome', e.target.value)} />
+                    {assets.rentalIncome > 0 && ( <div className="text-muted extra-small mt-1 italic" style={{fontSize: '0.7rem'}}> ✨ {numberToWords(assets.rentalIncome)} </div> )}
+                    {activeTooltip === 'rental' && (
+                      <div className="small text-success mt-1 fw-bold animate-fade">
+                        Rule: The property itself is NOT zakatable. Only include the rent money you have actually saved and still hold in your hand/bank.
+                      </div>
+                    )}
                   </div>
 
                   <div className="d-flex gap-3">
@@ -223,8 +291,10 @@ const UniversalZakatWizard = () => {
                           <td className="ps-4">Liquid Cash & Crypto</td>
                           <td className="text-end pe-3">{formatINR(assets.cash + assets.crypto)}</td>
                         </tr>
-                        <tr>
-                          <td className="ps-4">Gold ({assets.goldWeight}g @ {assets.goldPurity}K)</td>
+                       <tr>
+                          <td className="ps-4">
+                            Gold <span className="text-muted" style={{fontSize: '0.7rem'}}>({assets.goldWeight}g @ {assets.goldPurity}K)</span>
+                          </td>
                           <td className="text-end pe-3">{formatINR(goldVal)}</td>
                         </tr>
                         <tr>
@@ -253,9 +323,22 @@ const UniversalZakatWizard = () => {
                   </div>
 
                   <div className="mb-4">
-                    <label className={styles.formLabel}>Subtract Short-term Debts (₹)</label>
-                    <input type="number" value={liabilities || ''} className={`form-control ${styles.inputField}`} onChange={(e) => setLiabilities(parseFloat(e.target.value) || 0)} />
-                    <p className="small text-muted mt-2 text-end">Net Zakatable: <strong>{formatINR(netWealth)}</strong></p>
+                    <label className={styles.formLabel}>Immediate Deductible Liabilities (₹)</label>
+                    <input type="number" value={liabilities || ''} className={`form-control ${styles.inputField}`} onChange={(e) => setLiabilities(parseFloat(e.target.value) || 0)} placeholder="Monthly EMI (Non-interest), Bills, and Business Creditors"/>
+                    <div className="p-2 mt-2 rounded border" style={{backgroundColor: '#fffef0', fontSize: '0.75rem', borderColor: '#fde047'}}>
+                      <div className="d-flex gap-2">
+                        <span>🚫</span>
+                        <div>
+                          <strong>Do Not Deduct:</strong> Future interest, total home/car loan balances, or unpaid luxury expenses.
+                        </div>
+                      </div>
+                      <div className="d-flex gap-2 mt-1">
+                        <span>✅</span>
+                        <div>
+                          <strong>Deduct Only:</strong> Immediate business debts, utility bills, and the <strong>principal portion</strong> of your current month's EMI.
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   
                   <div className="d-flex gap-3">
@@ -271,7 +354,7 @@ const UniversalZakatWizard = () => {
                   <h4 className="fw-bold mb-2">Purification Summary</h4>
                   
                   <div className={styles.resultBox}>
-                    <span className="text-muted small text-uppercase fw-bold">Total Zakat Due</span>
+                    <span className="text-muted small text-uppercase fw-bold">Total Zakat to Pay (2.5%)</span>
                     <h1 className="display-4 fw-bold text-success mt-2">{formatINR(zakatDue)}</h1>
                     
                     {/* THRESHOLD ALERT BANNER */}
@@ -289,7 +372,7 @@ const UniversalZakatWizard = () => {
                   </div>
                   
                   <div className="row g-2 mb-4">
-                    <div className="col-6"><div className="p-3 bg-light rounded shadow-sm"><small className="text-muted d-block" style={{fontSize: '10px'}}>Net Wealth</small><span className="fw-bold">{formatINR(netWealth)}</span></div></div>
+                    <div className="col-6"><div className="p-3 bg-light rounded shadow-sm"><small className="text-muted d-block" style={{fontSize: '10px'}}>Net Zakatable Wealth</small><span className="fw-bold">{formatINR(netWealth)}</span></div></div>
                     <div className="col-6"><div className="p-3 bg-light rounded shadow-sm"><small className="text-muted d-block" style={{fontSize: '10px'}}>Fitrana Due</small><span className="fw-bold">{formatINR(totalFitrana)}</span></div></div>
                   </div>
 
@@ -332,9 +415,13 @@ const UniversalZakatWizard = () => {
             <div className="card-footer bg-light p-4 d-flex flex-wrap justify-content-between align-items-center">
               <div className="mb-3 mb-md-0">
                 <span className="small text-muted d-block mb-1 fw-bold">Threshold Base</span>
+                
                 <div className="btn-group shadow-sm">
                   <button onClick={() => setNisabType('gold')} className={`btn btn-sm ${nisabType === 'gold' ? 'btn-success' : 'btn-white bg-white border'}`}>Gold</button>
                   <button onClick={() => setNisabType('silver')} className={`btn btn-sm ${nisabType === 'silver' ? 'btn-success' : 'btn-white bg-white border'}`}>Silver</button>
+                </div>
+                <div className="extra-small text-success mt-1" style={{fontSize: '0.6rem'}}>
+                  {nisabType === 'silver' ? "★ Recommended for Cash-holders" : ""}
                 </div>
                 <div className="mt-2 small text-muted">
                   <span className="badge bg-success me-1">Live</span> 

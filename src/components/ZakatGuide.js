@@ -5,30 +5,30 @@ const ZakatGuide = () => {
     {
       title: "1. Cash & Liquid Wealth",
       field: "Savings, Bank Accounts, E-Wallets",
-      formula: "Total Amount × 2.5%",
-      description: "Any accessible money you own above basic needs. Includes business savings and personal cash.",
-      tip: "Include all current and savings account balances."
+      formula: "Net Balance × 2.5%",
+      description: "All accessible money. Ensure you exclude any interest (Riba) earned from the bank before calculating.",
+      tip: "Include cash hidden at home and balances in digital wallets like GPay/Paytm."
     },
     {
       title: "2. Precious Metals",
       field: "Gold & Silver Assets",
-      formula: "((Weight × Rate) × (Purity/24)) × 2.5%",
-      description: "Zakat is due on the market value. For 2026, gold rates are approximately ₹18,000/g (24K).",
-      tip: "If you have 22K jewelry, use the 22K rate provided in the calculator."
+      formula: "Weight × Current Market Rate × 2.5%",
+      description: "Zakat is due on the resale value today. If the jewelry has stones, subtract their weight first.",
+      tip: "The calculator automatically adjusts for 18K, 21K, 22K, and 24K."
     },
     {
       title: "3. Business & Stocks",
       field: "Inventory & Investment Portfolios",
-      formula: "Market Value × 2.5%",
-      description: "For businesses, include 'Stock-in-trade' value. For investors, include fully owned (vested) shares.",
-      tip: "Exclude fixed assets like office furniture or machinery."
+      formula: "Selling Price × 2.5%",
+      description: "Value your business stock at its current retail/selling price. For shares, use today's market value.",
+      tip: "Exclude 'Fixed Assets' like shop furniture, computers, or delivery vehicles."
     },
     {
       title: "4. Liabilities (Deductions)",
-      field: "Short-term Debts & Bills",
+      field: "Immediate Debts & Bills",
       formula: "Subtract from Total Assets",
-      description: "You can deduct immediate debts like this month's rent, utility bills, or supplier invoices.",
-      tip: "Do not deduct the full amount of long-term loans (Home/Car)."
+      description: "Deduct money you owe *now* (unpaid bills, salaries) and the principal part of your EMI for this year.",
+      tip: "Only deduct the debt amount that is due within the current lunar year."
     }
   ];
 
@@ -40,7 +40,7 @@ const ZakatGuide = () => {
       <div className="bg-success text-white p-4 rounded mb-4 text-center">
         <h6 className="text-uppercase small fw-bold opacity-75 mb-2">The Zakat Formula</h6>
         <div className="h4 mb-0 fw-bold">
-          (Total Assets — Immediate Debts) × 2.5%
+          (Total Zakatable Assets — Immediate Debts) × 2.5%
         </div>
       </div>
 
@@ -58,6 +58,16 @@ const ZakatGuide = () => {
             </div>
           </div>
         ))}
+      </div>
+      <div className="mt-2 p-3 bg-light-success rounded border-dashed text-center">
+        <p className="small mb-0 text-muted">
+          <strong>2026 Nisaab Reference:</strong> Silver: <strong>612.32g</strong> (52.5 Tola) 
+          <span className="mx-2">|</span> 
+          Gold: <strong>87.48g</strong> (7.5 Tola)
+        </p>
+        <p className="extra-small text-muted mt-1" style={{fontSize: '0.7rem'}}>
+          *If your net wealth is below these values, Zakat is not mandatory but highly rewarded as Sadaqah.
+        </p>
       </div>
     </div>
   );
