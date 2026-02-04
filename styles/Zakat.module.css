@@ -22,7 +22,8 @@
 }
 
 .inputField {
-  padding: 0.8rem;
+  height: 46px;
+  padding: 0.5rem 0.8rem;
   border: 1.5px solid #e5e7eb;
   border-radius: 10px;
   transition: all 0.2s ease;
@@ -99,4 +100,57 @@
   vertical-align: middle;
   margin-left: 4px;
   text-transform: uppercase;
+}
+
+.addBtn {
+  background-color: #059669; 
+  color: white;
+  border: none;
+  border-radius: 10px; 
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  width: 50%;
+}
+
+.addBtn:hover {
+  background-color: #047857;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);
+}
+
+.addBtn:active {
+  transform: translateY(0);
+}
+
+.buttonAlignmentWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+.buttonOffset {
+  margin-top: 1.85rem; 
+}
+
+.deleteBtn {
+  background-color: transparent;
+  color: #dc3545;
+  border: 1.5px solid #f8d7da;
+  border-radius: 10px;
+  width: 50%;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.deleteBtn:hover {
+  background-color: #fff5f5;
+  border-color: #dc3545;
+  color: #a71d2a;
 }

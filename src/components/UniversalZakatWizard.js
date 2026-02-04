@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import styles from '../../styles/Zakat.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const numberToWords = (num) => {
   if (!num || num <= 0) return "";
@@ -34,18 +36,21 @@ const UniversalZakatWizard = () => {
   const fitrRate = 250; 
 
   const [assets, setAssets] = useState({
-    cash: 0, crypto: 0, goldWeight: 0, goldPurity: 22,
-    silverWeight: 0, pension: 0, inventory: 0, investments: 0, rentalIncome: 0 
+    cash: 0, crypto: 0, silverWeight: 0, pension: 0, inventory: 0, investments: 0, rentalIncome: 0 
   });
+
+  const [goldEntries, setGoldEntries] = useState([
+    { id: Date.now(), weight: 0, purity: 22 }
+  ]);
   
   const [liabilities, setLiabilities] = useState(0);
 
   // Reset function to clear all inputs
   const resetAll = () => {
     setAssets({
-      cash: 0, crypto: 0, goldWeight: 0, goldPurity: 22,
-      silverWeight: 0, pension: 0, inventory: 0, investments: 0, rentalIncome: 0 
+      cash: 0, crypto: 0, silverWeight: 0, pension: 0, inventory: 0, investments: 0, rentalIncome: 0 
     });
+    setGoldEntries([{ id: Date.now(), weight: 0, purity: 22 }]);
     setLiabilities(0);
     setFitrCount(0);
     setStep(1);
@@ -65,7 +70,15 @@ const UniversalZakatWizard = () => {
 
   const toggleTooltip = (id) => setActiveTooltip(activeTooltip === id ? null : id);
 
-  const goldVal = assets.goldWeight * prices.gold * (assets.goldPurity / 24);
+  const BUYBACK_ADJUSTMENT = 0.97;
+  const goldVal = goldEntries.reduce((total, entry) => {
+    const currentSellableRate = prices.gold * (entry.purity / 24) * BUYBACK_ADJUSTMENT;
+    return total + (entry.weight * currentSellableRate);
+  }, 0);
+  const addNewGoldRow = () => setGoldEntries([...goldEntries, { id: Date.now(), weight: 0, purity: 22 }]);
+  const updateGoldEntry = (id, field, val) => {
+    setGoldEntries(goldEntries.map(e => e.id === id ? { ...e, [field]: parseFloat(val) || 0 } : e));
+  };
   const silverVal = assets.silverWeight * prices.silver;
   const totalAssets = assets.cash + assets.crypto + assets.pension + assets.inventory + assets.investments + assets.rentalIncome + goldVal + silverVal;
   const netWealth = Math.max(0, totalAssets - liabilities);
@@ -124,12 +137,12 @@ const UniversalZakatWizard = () => {
                   </div>
                   
                   <div className="row">
-                    <div className="col-md-6 mb-3">
+                    <div className="col-md-12 mb-3">
                       <label className={styles.formLabel}>Cash in Hand & Bank (₹)</label>
                       <input type="number" value={assets.cash || ''} className={`form-control ${styles.inputField}`} onChange={(e) => updateAsset('cash', e.target.value)} placeholder="0" />
                       {assets.cash > 0 && <div className="text-muted extra-small mt-1 italic" style={{fontSize: '0.7rem'}}>✨ {numberToWords(assets.cash)}</div>}
                     </div>
-                    <div className="col-md-6 mb-3 position-relative">
+                    <div className="col-md-12 mb-3 position-relative">
                       <label className={styles.formLabel}>
                         Digital Assets (Crypto/Wallets) (₹) 
                         <span className="ms-2 badge rounded-pill bg-light text-dark border cursor-pointer" onClick={() => toggleTooltip('crypto')}>?</span>
@@ -140,33 +153,99 @@ const UniversalZakatWizard = () => {
                     </div>
                   </div>
 
+                  <div className="d-flex align-items-center mb-3 mt-2">
+                    <h6 className="mb-0 fw-bold text-secondary">
+                      PRECIOUS METALS
+                    </h6>
+                    <span 
+                      className="ms-2 badge rounded-pill bg-light text-dark border cursor-pointer" 
+                      onClick={() => toggleTooltip('goldRate')}
+                    >
+                      ?
+                    </span>
+                  </div>
+
+                  {activeTooltip === 'goldRate' && (
+                    <div className="small text-success mt-1 fw-bold animate-fade">
+                      Rule: We deduct 3% from market rates to reflect the actual "Buy-back" price jewelers pay. Zakat is due on the sellable value.
+                    </div>
+                  )}
+
+                  {goldEntries.map((entry, index) => (
+                    <div className="row g-2 mt-1 align-items-start" key={entry.id}>
+                      <div className="col-4">
+                        {index === 0 && <label className={styles.formLabel}>Gold (g)</label>}
+                        <input 
+                          type="number" 
+                          value={entry.weight || ''} 
+                          className={`form-control ${styles.inputField}`} 
+                          onChange={(e) => updateGoldEntry(entry.id, 'weight', e.target.value)} 
+                          placeholder="0g" 
+                        />
+                        <div className="mt-1 d-flex flex-column" style={{ lineHeight: '1.2' }}>
+                          <span className="text-muted" style={{fontSize: '0.65rem'}}>≈ {(entry.weight / 11.66).toFixed(2)} Tola</span>
+                          <span className="text-success fw-bold" style={{fontSize: '0.6rem'}}>
+                            Sellable Rate: {formatINR(prices.gold * (entry.purity / 24) * 0.97)}/g
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="col-5">
+                        {index === 0 && <label className={styles.formLabel}>Purity</label>}
+                        <select 
+                          className={`form-select ${styles.inputField}`} 
+                          value={entry.purity} 
+                          onChange={(e) => updateGoldEntry(entry.id, 'purity', e.target.value)}
+                          style={{ height: '46px' }} 
+                        >
+                          <option value="24">24K</option>
+                          <option value="22">22K</option>
+                          <option value="21">21K</option>
+                          <option value="18">18K</option>
+                        </select>
+                      </div>
+
+                      <div className="col-3 text-center">
+                        {index === 0 && <label className={styles.formLabel} style={{ visibility: 'hidden' }}>Action</label>}
+                        {index === 0 ? (
+                          <button type="button" className={styles.addBtn} onClick={addNewGoldRow}>
+                            <FontAwesomeIcon icon={faPlus} />
+                          </button>
+                        ) : (
+                          <button 
+                            type="button" 
+                            className={styles.deleteBtn} 
+                            onClick={() => setGoldEntries(goldEntries.filter(e => e.id !== entry.id))}
+                          >
+                            <FontAwesomeIcon icon={faTrash} size="sm" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+
                   <div className="row g-3 mt-2">
-                    <div className="col-12 col-md-4">
-                      <label className={styles.formLabel}>Gold (g)</label>
-                      <input type="number" value={assets.goldWeight || ''} className={`form-control ${styles.inputField}`} onChange={(e) => updateAsset('goldWeight', e.target.value)} placeholder="0g" />
-                      <span className="text-muted" style={{fontSize: '0.65rem'}}>
-                        ≈ {(assets.goldWeight / 11.66).toFixed(2)} Tola
-                      </span>
-                    </div>
-                    <div className="col-12 col-md-4">
-                      <label className={styles.formLabel}>Gold Purity (Karat)</label>
-                      <select className={`form-select ${styles.inputField}`} value={assets.goldPurity} onChange={(e) => updateAsset('goldPurity', e.target.value)}>
-                        <option value="24">24K</option>
-                        <option value="22">22K</option>
-                        <option value="21">21K</option>
-                        <option value="18">18K</option>
-                      </select>
-                    </div>
-                    <div className="col-12 col-md-4">
+                    <div className="col-12 col-md-12">
                       <label className={styles.formLabel}>Silver (g)</label>
-                      <input type="number" value={assets.silverWeight || ''} className={`form-control ${styles.inputField}`} onChange={(e) => updateAsset('silverWeight', e.target.value)} placeholder="0g" />
-                      <span className="text-muted d-block mt-1" style={{fontSize: '0.65rem'}}>
-                        ≈ {(assets.silverWeight / 11.66).toFixed(2)} Tola
-                      </span>
+                      <input 
+                        type="number" 
+                        value={assets.silverWeight || ''} 
+                        className={`form-control ${styles.inputField}`} 
+                        onChange={(e) => updateAsset('silverWeight', e.target.value)} 
+                        placeholder="0g" 
+                      />
+                      <div className="d-flex justify-content-between align-items-center mt-1">
+                        <span className="text-muted" style={{fontSize: '0.65rem'}}>
+                          ≈ {(assets.silverWeight / 11.66).toFixed(2)} Tola
+                        </span>
+                        <span className="text-success fw-bold" style={{fontSize: '0.65rem'}}>
+                          Sellable Rate: {formatINR(prices.silver * 0.97)}/g
+                        </span>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="p-3 rounded border mb-4 shadow-sm" style={{backgroundColor: '#f8fafc', borderLeft: '4px solid #059669'}}>
+                  <div className="p-3 rounded border mb-4 shadow-sm mt-3" style={{backgroundColor: '#f8fafc', borderLeft: '4px solid #059669'}}>
                     <h6 className="fw-bold text-dark mb-2 small text-uppercase">Zakat Al-Fitr (Fitrana)</h6>
                     <div className="d-flex align-items-center gap-3">
                       <span className="small text-muted">Family Members:</span>
@@ -208,13 +287,13 @@ const UniversalZakatWizard = () => {
 
                     {activeTooltip === 'inventory' && (
                       <div className="small text-success mt-1 fw-bold animate-fade">
-                        Rule: Calculation Rule: Value items at their current Retail Selling Price (Market Value), not the original cost price.
+                        Rule: Value items at their current Retail Selling Price (Market Value), not the original cost price.
                       </div>
                     )}
                   </div>
 
                   <div className="row">
-                    <div className="col-md-6 mb-3">
+                    <div className="col-md-12 mb-3">
                       <label className={styles.formLabel}>
                         Shares & Mutual Funds (₹)
                         <span className="ms-2 badge rounded-pill bg-light text-dark border cursor-pointer" onClick={() => toggleTooltip('rsu')}>?</span>
@@ -223,7 +302,7 @@ const UniversalZakatWizard = () => {
                       {assets.investments > 0 && <div className="text-muted extra-small mt-1 italic" style={{fontSize: '0.7rem'}}>✨ {numberToWords(assets.investments)}</div>}
                       {activeTooltip === 'rsu' && <div className="small text-success mt-1 fw-bold">Rule: Market value of vested shares.</div>}
                     </div>
-                    <div className="col-md-6 mb-3">
+                    <div className="col-md-12 mb-3">
                       <label className={styles.formLabel}>
                         Provident Fund & LIC (Paid) (₹)
                         <span className="ms-2 badge rounded-pill bg-light text-dark border cursor-pointer" onClick={() => toggleTooltip('pf')}>?</span>
@@ -291,9 +370,12 @@ const UniversalZakatWizard = () => {
                           <td className="ps-4">Liquid Cash & Crypto</td>
                           <td className="text-end pe-3">{formatINR(assets.cash + assets.crypto)}</td>
                         </tr>
-                       <tr>
+                        <tr>
                           <td className="ps-4">
-                            Gold <span className="text-muted" style={{fontSize: '0.7rem'}}>({assets.goldWeight}g @ {assets.goldPurity}K)</span>
+                            {/* Updated logic for multiple gold entries */}
+                            Gold <span className="text-muted" style={{fontSize: '0.7rem'}}>
+                              ({goldEntries.reduce((sum, e) => sum + (parseFloat(e.weight) || 0), 0)}g Total)
+                            </span>
                           </td>
                           <td className="text-end pe-3">{formatINR(goldVal)}</td>
                         </tr>
@@ -301,6 +383,7 @@ const UniversalZakatWizard = () => {
                           <td className="ps-4">Silver ({assets.silverWeight}g)</td>
                           <td className="text-end pe-3">{formatINR(silverVal)}</td>
                         </tr>
+                        
                         <tr className="border-bottom">
                           <td className="ps-3 pt-3 text-muted small uppercase fw-bold" colSpan="2">Professional</td>
                         </tr>
@@ -424,8 +507,7 @@ const UniversalZakatWizard = () => {
                   {nisabType === 'silver' ? "★ Recommended for Cash-holders" : ""}
                 </div>
                 <div className="mt-2 small text-muted">
-                  <span className="badge bg-success me-1">Live</span> 
-                  1g Gold: <strong>{formatINR(prices.gold)}</strong>
+                  
                 </div>
               </div>
               <div className="text-md-end">
