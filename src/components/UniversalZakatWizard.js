@@ -107,8 +107,6 @@ const UniversalZakatWizard = () => {
 
   return (
     <div className="container-fluid min-vh-100 bg-light py-5">
-      <Head><title>Universal Zakat Wizard 2026</title></Head>
-
       <div className="row justify-content-center">
         <div className="col-12 col-md-10 col-lg-6">
           <div className={`card ${styles.calculatorCard}`}>
