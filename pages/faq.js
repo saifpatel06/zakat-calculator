@@ -1,15 +1,12 @@
 import Head from 'next/head';
 import Layout from '../src/components/Layout';
 import FAQSection from '../src/components/FAQSection';
+import Meta from '../src/components/Meta';
 
 const FAQ = () => {
   return (
     <Layout>
-      <Head>
-        <title>FAQ - Frequently Asked Questions About Zakat</title>
-        <meta name="description" content="Find answers to common questions about Zakat calculation and eligibility" />
-      </Head>
-
+      <Meta />
       <FAQSection />
     </Layout>
   );

@@ -3,16 +3,14 @@ import Head from 'next/head';
 import Layout from '../src/components/Layout';
 import UniversalZakatWizard from '../src/components/UniversalZakatWizard';
 import ZakatGuide from '../src/components/ZakatGuide';
+import Meta from '../src/components/Meta';
 
 const Calculator = () => {
   const [showGuide, setShowGuide] = useState(false);
 
   return (
     <Layout>
-      <Head>
-        <title>Zakat Calculator - Calculate Your Zakat</title>
-        <meta name="description" content="Calculate your Zakat accurately with our comprehensive calculator" />
-      </Head>
+      <Meta />
 
       <div className="container">
         {/* Main Calculator */}

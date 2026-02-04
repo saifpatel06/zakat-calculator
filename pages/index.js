@@ -5,13 +5,13 @@ import IslamicPatterns from '../src/components/Islamicpatterns';
 import ArabicCalligraphy from '../src/components/Arabiccalligraphy';
 import IslamicMotif from '../src/components/Islamicmotif';
 import styles from '../styles/Home.module.css';
+import Meta from '../src/components/Meta';
 
 const Home = () => {
   return (
     <Layout>
+      <Meta />
       <Head>
-        <title>Universal Zakat Calculator 2026 - Calculate Your Zakat</title>
-        <meta name="description" content="Calculate your Zakat accurately with our comprehensive Islamic calculator. Free, secure, and easy to use." />
         <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
       </Head>
 

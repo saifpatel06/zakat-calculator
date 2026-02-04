@@ -2,14 +2,12 @@ import Head from 'next/head';
 import Layout from '../src/components/Layout';
 import styles from '../styles/About.module.css';
 import Link from 'next/link';
+import Meta from '../src/components/Meta';
 
 const About = () => {
   return (
     <Layout>
-      <Head>
-        <title>About - Understanding Zakat 2026</title>
-        <meta name="description" content="Learn about Zakat rules, special categories like Agriculture and Livestock, and eligible recipients." />
-      </Head>
+      <Meta />
 
       <div className={styles.aboutPage}>
         <section className={styles.hero}>
