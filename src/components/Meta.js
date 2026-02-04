@@ -66,6 +66,26 @@ const Meta = () => {
       <meta name="twitter:image" content={defaultImage} />
 
       <meta name="google-site-verification" content="googlea8466eae6810598d" />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": meta.title, 
+            "description": meta.description,
+            "applicationCategory": "FinanceApplication",
+            "operatingSystem": "All",
+            "url": fullUrl,
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            }
+          }),
+        }}
+      />
     </Head>
   );
 };
