@@ -3,9 +3,12 @@ import { useRouter } from 'next/router';
 
 const Meta = () => {
   const router = useRouter();
-
-  const rawPath = router.asPath; 
-  const path = rawPath === '/' ? '/' : rawPath.replace(/\/$/, "");
+  const rawPath = router.asPath.split('?')[0]; 
+  const path = rawPath === '/' ? '' : rawPath.replace(/\/$/, "");
+  
+  const siteUrl = "https://zakat-calculator-psi.vercel.app";
+  const fullUrl = `${siteUrl}${path}`;
+  const defaultImage = `${siteUrl}/og-image.jpg`;
 
   const metaConfig = {
     '/': {
@@ -35,7 +38,7 @@ const Meta = () => {
     },
   };
 
-  const meta = metaConfig[path] || {
+  const meta = metaConfig[path || '/'] || {
     title: 'Universal Zakat Calculator 2026',
     description: 'Fulfill your third pillar of Islam with our precise and secure Zakat calculation tools.',
     keywords: 'zakat, islam, charity, wealth purification',
@@ -46,26 +49,25 @@ const Meta = () => {
       <title>{meta.title}</title>
       <meta name="description" content={meta.description} />
       <meta name="keywords" content={meta.keywords} />
-      
-      {/* SEO */}
       <meta name="robots" content="index, follow" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <link rel="canonical" href={`https://zakat-calculator-psi.vercel.app/${path}`} />
+      <link rel="canonical" href={fullUrl} />
 
-      {/* Open Graph */}
       <meta property="og:site_name" content="Universal Zakat Calculator" />
       <meta property="og:title" content={meta.title} />
       <meta property="og:description" content={meta.description} />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content={`https://zakat-calculator-psi.vercel.app/${path}`} />
+      <meta property="og:url" content={fullUrl} />
+      <meta property="og:image" content={defaultImage} />
       
-      {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={meta.title} />
       <meta name="twitter:description" content={meta.description} />
+      <meta name="twitter:image" content={defaultImage} />
+
+      <meta name="google-site-verification" content="googlea8466eae6810598d" />
     </Head>
   );
 };
 
 export default Meta;
-
