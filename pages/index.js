@@ -6,6 +6,8 @@ import ArabicCalligraphy from '../src/components/Arabiccalligraphy';
 import IslamicMotif from '../src/components/Islamicmotif';
 import styles from '../styles/Home.module.css';
 import Meta from '../src/components/Meta';
+import RamadanDashboard from '../src/components/RamadanDashboard';
+import Ramadaneducation from '../src/components/Ramadaneducation';
 
 const Home = () => {
   return (
@@ -20,9 +22,9 @@ const Home = () => {
         <IslamicPatterns variant="header" opacity={0.08} />
         <div className={styles.heroContent}>
           {/* Islamic Motif */}
-          <div className={styles.motifWrapper}>
+          {/* <div className={styles.motifWrapper}>
             <IslamicMotif size="large" variant="crescent" animated={true} />
-          </div>
+          </div> */}
 
           {/* Arabic Calligraphy */}
           <ArabicCalligraphy text="bismillah" position="center" />
@@ -108,14 +110,14 @@ const Home = () => {
               </p>
             </div>
 
-            <div className={styles.featureCard}>
+            {/* <div className={styles.featureCard}>
               <IslamicPatterns variant="arabesque" opacity={0.05} />
               <span className={styles.featureIcon}>🌍</span>
               <h3 className={styles.featureTitle}>Multi-Currency</h3>
               <p className={styles.featureText}>
                 Calculate in your local currency with automatic conversions
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
@@ -156,7 +158,10 @@ const Home = () => {
             <span className={styles.ornament}>✦</span>
           </div>
         </div>
+
       </section>
+      <RamadanDashboard />
+      <Ramadaneducation />
     </Layout>
   );
 };
