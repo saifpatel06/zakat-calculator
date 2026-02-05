@@ -1,5 +1,6 @@
 import Header from './Header';
 import styles from '../../styles/Layout.module.css';
+import Image from 'next/image';
 
 const Layout = ({ children }) => {
   return (
@@ -11,7 +12,13 @@ const Layout = ({ children }) => {
       <footer className={styles.footer}>
         <div className={styles.footerContent}>
           <div className={styles.footerSection}>
-            <h3 className={styles.footerTitle}>🕌 Zakat Calculator</h3>
+            <Image 
+              src="/website-logo.png" 
+              alt="Zakat Calculator Logo" 
+              width={100}
+              height={100} 
+              className={styles.footerLogo} 
+            />
             <p className={styles.footerText}>
               Calculate your Zakat accurately according to Islamic principles.
             </p>

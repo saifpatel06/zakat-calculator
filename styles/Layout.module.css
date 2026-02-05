@@ -83,6 +83,12 @@
   margin: 0;
 }
 
+.footerLogo {
+  margin-bottom: 1rem; 
+  display: block;
+}
+
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .footerContent {

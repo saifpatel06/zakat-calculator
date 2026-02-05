@@ -21,12 +21,14 @@
 }
 
 /* Logo */
+.logoImage {
+  display: block;
+}
+
 .logo {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
   text-decoration: none;
-  transition: transform 0.2s ease;
 }
 
 .logo:hover {

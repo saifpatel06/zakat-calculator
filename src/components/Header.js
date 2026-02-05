@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styles from '../../styles/Header.module.css';
+import Image from 'next/image';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -24,8 +25,14 @@ const Header = () => {
         <div className={styles.headerContent}>
           {/* Logo */}
           <Link href="/" className={styles.logo}>
-            <span className={styles.logoIcon}></span>
-            <span className={styles.logoText}>Mercy Oceans</span>
+            <Image 
+              src="/website-logo.png" 
+              alt="Mercy Oceans Logo" 
+              className={styles.logoImage} 
+              priority 
+              width={100}
+              height={100}
+            />
           </Link>
 
           {/* Desktop Navigation */}

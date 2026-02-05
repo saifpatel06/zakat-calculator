@@ -8,7 +8,7 @@ const Meta = () => {
   
   const siteUrl = "https://zakat-calculator-psi.vercel.app";
   const fullUrl = `${siteUrl}${path}`;
-  const defaultImage = `${siteUrl}/og-image.jpg`;
+  const defaultImage = `${siteUrl}/website-logo.png`;
 
   const metaConfig = {
     '/': {
