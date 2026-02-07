@@ -16,6 +16,7 @@ const FeedbackPage = () => {
     device: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const feedbackCategories = [
     'General Feedback',
@@ -161,20 +162,6 @@ const FeedbackPage = () => {
               </div>
             </button>
           </div>
-
-          {/* Success Message */}
-          {submitted && (
-            <div className={styles.successMessage}>
-              <span className={styles.successIcon}>✓</span>
-              <div>
-                <div className={styles.successTitle}>Thank you!</div>
-                <div className={styles.successText}>
-                  Your {formType === 'feedback' ? 'feedback' : 'bug report'} has been received. 
-                  We appreciate your help in making our platform better.
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* Form */}
           <form onSubmit={handleSubmit} className={styles.form}>
@@ -390,6 +377,20 @@ const FeedbackPage = () => {
                 📋 Copy to Clipboard
               </button>
             </div>
+
+            {/* Success Message */}
+            {submitted && (
+              <div className={styles.successMessage}>
+                <span className={styles.successIcon}>✓</span>
+                <div>
+                  <div className={styles.successTitle}>Thank you!</div>
+                  <div className={styles.successText}>
+                    Your {formType === 'feedback' ? 'feedback' : 'bug report'} has been received. 
+                    We appreciate your help in making our platform better.
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className={styles.privacyNote}>
               <span className={styles.lockIcon}>🔒</span>
