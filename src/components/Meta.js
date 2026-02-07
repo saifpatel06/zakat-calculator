@@ -36,6 +36,11 @@ const Meta = () => {
       description: 'Read the latest articles on Islamic finance, the impact of Zakat on society, and deep dives into contemporary Zakat issues.',
       keywords: 'islamic finance articles, zakat blog, importance of zakat, purification of wealth articles, zakat in 2026'
     },
+    '/feedback': {
+      title: 'Feedback & Bug Reports - Universal Zakat Calculator',
+      description: 'Share your feedback or report bugs to help improve our Zakat calculator and website.',
+      keywords: 'feedback form, bug report, zakat calculator feedback, user feedback, improve zakat calculator'
+    },
   };
 
   const meta = metaConfig[path || '/'] || {

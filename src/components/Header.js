@@ -14,7 +14,7 @@ const Header = () => {
     { name: 'Zakat Guide', path: '/about' },
     { name: 'Calculator', path: '/calculator' },
     { name: 'FAQ', path: '/faq' },
-    { name: 'Articles', path: '/articles' },
+    { name: 'Feedback', path: '/feedback' },
   ];
 
   const isActive = (path) => router.pathname === path;

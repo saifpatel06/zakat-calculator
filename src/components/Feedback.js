@@ -46,61 +46,74 @@ const FeedbackPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Since this is static, we'll show the data in console and display success message
-    // In production, you would send this to an email service or external form service
-    
+    // Prepare the data to match what you want to see in your email/dashboard
     const submissionData = {
-      type: formType,
-      timestamp: new Date().toISOString(),
-      ...formData
+      Type: formType.toUpperCase(),
+      Name: formData.name,
+      Email: formData.email,
+      Category: formData.category,
+      Subject: formData.subject,
+      Message: formData.message,
+      Priority: formType === 'bug' ? formData.priority : 'N/A',
+      Browser: formData.browser || 'N/A',
+      Device: formData.device || 'N/A',
     };
-    
-    console.log('Form Submission:', submissionData);
-    
-    // You can integrate with services like:
-    // - Formspree.io
-    // - EmailJS
-    // - Netlify Forms
-    // - Google Forms
-    
-    setSubmitted(true);
-    
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({
-        name: '',
-        email: '',
-        category: '',
-        subject: '',
-        message: '',
-        priority: 'medium',
-        browser: '',
-        device: ''
+
+    try {
+      // PASTE YOUR FORMSPREE URL HERE
+      const FORMSPREE_URL = 'https://formspree.io/f/mojnqlpv';
+
+      const response = await fetch(FORMSPREE_URL, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(submissionData),
       });
-    }, 3000);
+
+      if (response.ok) {
+        // Success!
+        setSubmitted(true);
+        
+        // Reset form fields
+        setFormData({
+          name: '', email: '', category: '', subject: '',
+          message: '', priority: 'medium', browser: '', device: ''
+        });
+
+        // Hide success message after 5 seconds
+        setTimeout(() => setSubmitted(false), 5000);
+      } else {
+        const errorData = await response.json();
+        alert(`Submission failed: ${errorData.errors.map(e => e.message).join(', ')}`);
+      }
+    } catch (error) {
+      console.error('Formspree Error:', error);
+      alert('Oops! There was a problem submitting your form.');
+    }
   };
 
   const copyToClipboard = () => {
     const text = `
-=== ${formType === 'feedback' ? 'FEEDBACK' : 'BUG REPORT'} ===
-From: ${formData.name}
-Email: ${formData.email}
-Category: ${formData.category}
-${formType === 'bug' ? `Priority: ${formData.priority}` : ''}
-Subject: ${formData.subject}
+      === ${formType === 'feedback' ? 'FEEDBACK' : 'BUG REPORT'} ===
+      From: ${formData.name}
+      Email: ${formData.email}
+      Category: ${formData.category}
+      ${formType === 'bug' ? `Priority: ${formData.priority}` : ''}
+      Subject: ${formData.subject}
 
-Message:
-${formData.message}
+      Message:
+      ${formData.message}
 
-${formType === 'bug' ? `Browser: ${formData.browser}
-Device: ${formData.device}` : ''}
+      ${formType === 'bug' ? `Browser: ${formData.browser}
+      Device: ${formData.device}` : ''}
 
-Submitted: ${new Date().toLocaleString()}
-    `.trim();
+      Submitted: ${new Date().toLocaleString()}
+          `.trim();
     
     navigator.clipboard.writeText(text);
     alert('Form data copied to clipboard! You can email this to support.');
@@ -385,7 +398,7 @@ Submitted: ${new Date().toLocaleString()}
           </form>
 
           {/* Additional Help */}
-          <div className={styles.helpSection}>
+          {/* <div className={styles.helpSection}>
             <h3 className={styles.helpTitle}>Need Immediate Help?</h3>
             <div className={styles.helpGrid}>
               <div className={styles.helpCard}>
@@ -415,7 +428,7 @@ Submitted: ${new Date().toLocaleString()}
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
         </div>
       </div>

@@ -1,6 +1,7 @@
 import Header from './Header';
 import styles from '../../styles/Layout.module.css';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const Layout = ({ children }) => {
   return (
@@ -27,19 +28,17 @@ const Layout = ({ children }) => {
           <div className={styles.footerSection}>
             <h4 className={styles.footerSubtitle}>Quick Links</h4>
             <ul className={styles.footerLinks}>
-              <li><a href="/">Home</a></li>
-              <li><a href="/calculator">Calculator</a></li>
-              <li><a href="/faq">FAQ</a></li>
-              <li><a href="/articles">Articles</a></li>
+              <li><Link href="/">Home</Link></li>
+              <li><Link href="/calculator">Calculator</Link></li>
+              <li><Link href="/faq">FAQ</Link></li>
             </ul>
           </div>
 
           <div className={styles.footerSection}>
             <h4 className={styles.footerSubtitle}>Resources</h4>
             <ul className={styles.footerLinks}>
-              <li><a href="/about">About Zakat</a></li>
-              <li><a href="#guide">Calculation Guide</a></li>
-              <li><a href="#contact">Contact Us</a></li>
+              <li><Link href="/about">About Zakat</Link></li>
+              <li><Link href="/feedback">Feedback</Link></li>
             </ul>
           </div>
         </div>
