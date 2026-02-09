@@ -3,6 +3,7 @@ import Head from 'next/head';
 import styles from '../../styles/Zakat.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import Link from 'next/link';
 
 const numberToWords = (num) => {
   if (!num || num <= 0) return "";
@@ -488,6 +489,21 @@ const UniversalZakatWizard = () => {
                   </div>
 
                   <button className="btn btn-dark w-100 py-3 fw-bold rounded-pill shadow mt-4" onClick={resetAll}>New Calculation</button>
+                  
+                  <div className="mt-5 pt-3 border-top">
+                    <div className="d-flex flex-column align-items-center">
+                      <span className="text-muted mb-2" style={{ fontSize: '12px' }}>
+                        Satisfied with the results or found an issue?
+                      </span>
+                      <Link 
+                        href="/feedback" 
+                        className="text-decoration-none text-success fw-bold d-flex align-items-center gap-1"
+                        style={{ fontSize: '13px' }}
+                      >
+                        💬 Share Feedback or Report Bug
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>

@@ -122,20 +122,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Islamic Values Section */}
-      <section className={styles.valuesSection}>
-        <IslamicPatterns variant="mandala" opacity={0.06} />
-        <div className={styles.valuesContent}>
-          <IslamicMotif size="medium" variant="lantern" animated={true} />
-          <ArabicCalligraphy text="zakat" position="center" />
-          <h2 className={styles.valuesTitle}>Purify Your Wealth</h2>
-          <p className={styles.valuesText}>
-            "The believer's shade on the Day of Resurrection will be his charity."
-          </p>
-          <p className={styles.valuesSource}>- Prophet Muhammad (ﷺ)</p>
-        </div>
-      </section>
-
       {/* CTA Section with Islamic Design */}
       <section className={styles.cta}>
         <IslamicPatterns variant="header" opacity={0.1} />
@@ -160,8 +146,21 @@ const Home = () => {
         </div>
 
       </section>
-      <RamadanDashboard />
-      <Ramadaneducation />
+
+      {/* Islamic Values Section */}
+      <section className={styles.valuesSection}>
+        <IslamicPatterns variant="mandala" opacity={0.06} />
+        <div className={styles.valuesContent}>
+          <IslamicMotif size="medium" variant="lantern" animated={true} />
+          <ArabicCalligraphy text="zakat" position="center" />
+          <h2 className={styles.valuesTitle}>Purify Your Wealth</h2>
+          <p className={styles.valuesText}>
+            "The believer's shade on the Day of Resurrection will be his charity."
+          </p>
+          <p className={styles.valuesSource}>- Prophet Muhammad (ﷺ)</p>
+        </div>
+      </section>
+      
     </Layout>
   );
 };

@@ -2,7 +2,6 @@
 .hero {
   background: linear-gradient(135deg, #064e3b 0%, #047857 100%);
   color: white;
-  padding: 6rem 1.5rem;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -294,7 +293,6 @@
 /* Islamic Values Section */
 .valuesSection {
   background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
-  padding: 6rem 1.5rem;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -331,7 +329,6 @@
 /* CTA Section */
 .cta {
   background: linear-gradient(135deg, #064e3b 0%, #047857 100%);
-  padding: 6rem 1.5rem;
   text-align: center;
   position: relative;
   overflow: hidden;

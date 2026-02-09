@@ -144,7 +144,6 @@ const FeedbackPage = () => {
               className={`${styles.typeButton} ${formType === 'feedback' ? styles.activeType : ''}`}
               onClick={() => setFormType('feedback')}
             >
-              <span className={styles.typeIcon}>💬</span>
               <div>
                 <div className={styles.typeTitle}>Feedback</div>
                 <div className={styles.typeDesc}>Share suggestions or comments</div>
@@ -155,7 +154,6 @@ const FeedbackPage = () => {
               className={`${styles.typeButton} ${formType === 'bug' ? styles.activeType : ''}`}
               onClick={() => setFormType('bug')}
             >
-              <span className={styles.typeIcon}>🐛</span>
               <div>
                 <div className={styles.typeTitle}>Bug Report</div>
                 <div className={styles.typeDesc}>Report technical issues</div>
