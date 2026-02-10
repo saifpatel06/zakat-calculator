@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import styles from '../../styles/RamadanDashboard.module.css';
+import styles from '../../../styles/Ramadan/RamadanDashboard.module.css';
 import Image from 'next/image';
 
 const RamadanDashboard = () => {

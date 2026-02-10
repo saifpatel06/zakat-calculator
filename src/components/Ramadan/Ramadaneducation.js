@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import styles from '../../styles/Ramadaneducation.module.css';
+import styles from '../../../styles/Ramadan/Ramadaneducation.module.css';
 
 const RamadanEducation = () => {
   const [activeTab, setActiveTab] = useState('tips');

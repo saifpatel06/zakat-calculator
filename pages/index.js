@@ -6,8 +6,8 @@ import ArabicCalligraphy from '../src/components/Arabiccalligraphy';
 import IslamicMotif from '../src/components/Islamicmotif';
 import styles from '../styles/Home.module.css';
 import Meta from '../src/components/Meta';
-import RamadanDashboard from '../src/components/RamadanDashboard';
-import Ramadaneducation from '../src/components/Ramadaneducation';
+import RamadanDashboard from '../src/components/Ramadan/RamadanDashboard';
+import Ramadaneducation from '../src/components/Ramadan/Ramadaneducation';
 
 const Home = () => {
   return (

@@ -58,6 +58,10 @@ const Meta = () => {
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link rel="canonical" href={fullUrl} />
 
+      <link rel="icon" href="/favicon.ico?v=1" />
+      <link rel="shortcut icon" href="/favicon.ico?v=1" />
+      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
       <meta property="og:site_name" content="Universal Zakat Calculator" />
       <meta property="og:title" content={meta.title} />
       <meta property="og:description" content={meta.description} />
