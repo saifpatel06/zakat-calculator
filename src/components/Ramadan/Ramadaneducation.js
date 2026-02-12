@@ -247,152 +247,145 @@ const RamadanEducation = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.educationCard}>
+    <div className={styles.pageWrapper}>
+      <div className={styles.container}>
         
-        {/* Header */}
-        <div className={styles.header}>
-          <h2 className={styles.title}>
-            Islamic Knowledge Hub
-          </h2>
-          <p className={styles.subtitle}>Learn and grow during this blessed month</p>
+        {/* Header Section */}
+        <div className={styles.heroHeader}>
+          <div className={styles.headerIcon}>📚</div>
+          <h1 className={styles.mainTitle}>Islamic Knowledge Hub</h1>
+          <p className={styles.mainSubtitle}>Learn and grow during this blessed month of Ramadan</p>
         </div>
 
-        {/* Tabs */}
-        <div className={styles.tabContainer}>
+        {/* Modern Tab Navigation */}
+        <div className={styles.tabNavigation}>
           <button 
-            className={`${styles.tab} ${activeTab === 'tips' ? styles.activeTab : ''}`}
+            className={`${styles.tabButton} ${activeTab === 'tips' ? styles.tabActive : ''}`}
             onClick={() => setActiveTab('tips')}
           >
-            <span className={styles.tabIcon}>💡</span>
-            Daily Tip
+            <span className={styles.tabEmoji}>💡</span>
+            <span className={styles.tabLabel}>Daily Tips</span>
           </button>
           <button 
-            className={`${styles.tab} ${activeTab === 'hadith' ? styles.activeTab : ''}`}
+            className={`${styles.tabButton} ${activeTab === 'hadith' ? styles.tabActive : ''}`}
             onClick={() => setActiveTab('hadith')}
           >
-            <span className={styles.tabIcon}>📖</span>
-            Hadith
+            <span className={styles.tabEmoji}>📖</span>
+            <span className={styles.tabLabel}>Hadith</span>
           </button>
           <button 
-            className={`${styles.tab} ${activeTab === 'duas' ? styles.activeTab : ''}`}
+            className={`${styles.tabButton} ${activeTab === 'duas' ? styles.tabActive : ''}`}
             onClick={() => setActiveTab('duas')}
           >
-            <span className={styles.tabIcon}>🤲</span>
-            Duas
+            <span className={styles.tabEmoji}>🤲</span>
+            <span className={styles.tabLabel}>Duas</span>
           </button>
           <button 
-            className={`${styles.tab} ${activeTab === 'glossary' ? styles.activeTab : ''}`}
+            className={`${styles.tabButton} ${activeTab === 'glossary' ? styles.tabActive : ''}`}
             onClick={() => setActiveTab('glossary')}
           >
-            <span className={styles.tabIcon}>📝</span>
-            Glossary
+            <span className={styles.tabEmoji}>📝</span>
+            <span className={styles.tabLabel}>Glossary</span>
           </button>
         </div>
 
-        {/* Content Area */}
-        <div className={styles.contentArea}>
+        {/* Content Cards */}
+        <div className={styles.contentWrapper}>
           
-          {/* Daily Tip Section */}
+          {/* Daily Tip */}
           {activeTab === 'tips' && (
-            <div className={styles.tipSection}>
-              <div className={styles.dailyBadge}>
-                <span className={styles.badgeIcon}>🌟</span>
+            <div className={styles.contentCard}>
+              <div className={styles.badgeTag}>
+                <span className={styles.badgeIcon}>⭐</span>
                 Tip of the Day
               </div>
-              <div className={styles.tipCard}>
-                <div className={styles.tipIcon}>💡</div>
-                <p className={styles.tipText}>{dailyTip}</p>
-              </div>
-              <div className={styles.tipFooter}>
-                <span className={styles.tipNote}>Tips rotate daily based on the date</span>
+              <div className={styles.tipContainer}>
+                <div className={styles.bulbIcon}>💡</div>
+                <p className={styles.tipContent}>{dailyTip}</p>
               </div>
             </div>
           )}
 
-          {/* Hadith Section */}
+          {/* Hadith of the Day */}
           {activeTab === 'hadith' && dailyHadith && (
-            <div className={styles.hadithSection}>
-              <div className={styles.dailyBadge}>
+            <div className={styles.contentCard}>
+              <div className={styles.badgeTag}>
                 <span className={styles.badgeIcon}>📿</span>
                 Hadith of the Day
               </div>
-              <div className={styles.hadithCard}>
-                <div className={styles.hadithArabic}>{dailyHadith.arabic}</div>
-                <div className={styles.hadithEnglish}>"{dailyHadith.english}"</div>
-                <div className={styles.hadithSource}>— {dailyHadith.source}</div>
+              <div className={styles.hadithContainer}>
+                <div className={styles.quoteDecor}>"</div>
+                <div className={styles.hadithArabicText}>{dailyHadith.arabic}</div>
+                <div className={styles.hadithEnglishText}>"{dailyHadith.english}"</div>
+                <div className={styles.hadithSourceText}>— {dailyHadith.source}</div>
               </div>
-              <div className={styles.hadithFooter}>
-                <span className={styles.hadithNote}>New Hadith every day</span>
-              </div>
+              <div className={styles.rotateNote}>New Hadith every day</div>
             </div>
           )}
 
-          {/* Dua Flashcards Section */}
+          {/* Dua Flashcards */}
           {activeTab === 'duas' && (
-            <div className={styles.duaSection}>
-              <div className={styles.flashcardContainer}>
-                <div className={styles.flashcard}>
-                  <div className={styles.cardHeader}>
-                    <span className={styles.cardNumber}>{currentCardIndex + 1} / {duas.length}</span>
-                    <h3 className={styles.duaTitle}>{duas[currentCardIndex].title}</h3>
-                  </div>
-                  
-                  <div className={styles.duaContent}>
-                    <div className={styles.duaArabic}>{duas[currentCardIndex].arabic}</div>
-                    <div className={styles.duaTransliteration}>{duas[currentCardIndex].transliteration}</div>
-                    <div className={styles.duaTranslation}>{duas[currentCardIndex].translation}</div>
-                    <div className={styles.duaWhen}>
-                      <span className={styles.whenIcon}>⏰</span>
-                      {duas[currentCardIndex].when}
-                    </div>
+            <div className={styles.flashcardWrapper}>
+              <div className={styles.duaCard}>
+                <div className={styles.duaCardHeader}>
+                  <span className={styles.duaCounter}>{currentCardIndex + 1} / {duas.length}</span>
+                  <h3 className={styles.duaTitleText}>{duas[currentCardIndex].title}</h3>
+                </div>
+                
+                <div className={styles.duaCardBody}>
+                  <div className={styles.duaArabicText}>{duas[currentCardIndex].arabic}</div>
+                  <div className={styles.duaTransliterationText}>{duas[currentCardIndex].transliteration}</div>
+                  <div className={styles.duaTranslationText}>{duas[currentCardIndex].translation}</div>
+                  <div className={styles.duaWhenBox}>
+                    <span className={styles.clockIcon}>⏰</span>
+                    {duas[currentCardIndex].when}
                   </div>
                 </div>
+              </div>
 
-                <div className={styles.cardNavigation}>
-                  <button onClick={prevCard} className={styles.navButton}>
-                    <span>←</span> Previous
-                  </button>
-                  <div className={styles.cardDots}>
-                    {duas.map((_, index) => (
-                      <span 
-                        key={index} 
-                        className={`${styles.dot} ${index === currentCardIndex ? styles.activeDot : ''}`}
-                        onClick={() => setCurrentCardIndex(index)}
-                      ></span>
-                    ))}
-                  </div>
-                  <button onClick={nextCard} className={styles.navButton}>
-                    Next <span>→</span>
-                  </button>
+              <div className={styles.flashcardNav}>
+                <button onClick={prevCard} className={styles.navBtn}>
+                  ← Previous
+                </button>
+                <div className={styles.dotIndicators}>
+                  {duas.map((_, index) => (
+                    <button
+                      key={index} 
+                      className={`${styles.dotBtn} ${index === currentCardIndex ? styles.dotActive : ''}`}
+                      onClick={() => setCurrentCardIndex(index)}
+                    />
+                  ))}
                 </div>
+                <button onClick={nextCard} className={styles.navBtn}>
+                  Next →
+                </button>
               </div>
             </div>
           )}
 
-          {/* Glossary Section */}
+          {/* Glossary */}
           {activeTab === 'glossary' && (
-            <div className={styles.glossarySection}>
-              <div className={styles.glossaryHeader}>
-                <h3 className={styles.glossaryTitle}>Islamic Terms & Definitions</h3>
-                <p className={styles.glossarySubtitle}>Click to expand each term</p>
+            <div className={styles.glossaryWrapper}>
+              <div className={styles.glossaryIntro}>
+                <h3 className={styles.glossaryHeading}>Islamic Terms & Definitions</h3>
+                <p className={styles.glossaryDesc}>Click on any term to expand its definition</p>
               </div>
               
-              <div className={styles.glossaryList}>
+              <div className={styles.glossaryGrid}>
                 {glossary.map((item, index) => (
                   <div 
                     key={index} 
-                    className={`${styles.glossaryItem} ${expandedTerm === index ? styles.expanded : ''}`}
+                    className={`${styles.glossaryCard} ${expandedTerm === index ? styles.glossaryExpanded : ''}`}
                     onClick={() => toggleTerm(index)}
                   >
-                    <div className={styles.glossaryHeader}>
-                      <span className={styles.glossaryTerm}>{item.term}</span>
-                      <span className={styles.expandIcon}>
+                    <div className={styles.glossaryCardTop}>
+                      <span className={styles.termName}>{item.term}</span>
+                      <span className={styles.expandBtn}>
                         {expandedTerm === index ? '−' : '+'}
                       </span>
                     </div>
                     {expandedTerm === index && (
-                      <div className={styles.glossaryDefinition}>
+                      <div className={styles.termDefinition}>
                         {item.definition}
                       </div>
                     )}

@@ -1,28 +1,26 @@
-/* Container */
+/* Page Wrapper */
+.pageWrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f9ff 0%, #f0fdf4 50%, #fef3c7 100%);
+  padding: 2rem 0;
+}
+
 .container {
-  max-width: 1200px;
-  margin: 2rem auto;
+  max-width: 1400px;
+  margin: 0 auto;
   padding: 0 1.5rem;
 }
 
-/* Dashboard Card */
-.dashboardCard {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
-  border: 2px solid #d1fae5;
-  border-radius: 24px;
-  padding: 2.5rem;
-  box-shadow: 
-    0 20px 60px rgba(5, 150, 105, 0.1),
-    0 4px 12px rgba(0, 0, 0, 0.05);
-  animation: slideIn 0.6s ease-out;
+/* Hero Section */
+.heroSection {
+  margin-bottom: 2.5rem;
+  animation: fadeInDown 0.6s ease-out;
 }
 
-@keyframes slideIn {
+@keyframes fadeInDown {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(-20px);
   }
   to {
     opacity: 1;
@@ -30,313 +28,431 @@
   }
 }
 
-/* Decorative Islamic Pattern */
-.decorativePattern {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 400px;
-  height: 400px;
-  background-image: 
-    radial-gradient(circle at 20% 50%, rgba(5, 150, 105, 0.03) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
-  pointer-events: none;
-  opacity: 0.6;
+.heroContent {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
-/* Header */
-.header {
+/* Islamic Date Card */
+.islamicDateCard {
+  background: linear-gradient(135deg, #064e3b 0%, #047857 100%);
+  padding: 2rem 2.5rem;
+  border-radius: 20px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 2px solid #d1fae5;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.headerLeft {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.moonIcon {
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, #059669, #047857);
-  border-radius: 50%;
-  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
-  box-shadow: 0 8px 20px rgba(5, 150, 105, 0.3);
-  animation: pulse 2s ease-in-out infinite;
+  box-shadow: 0 10px 40px rgba(6, 78, 59, 0.4);
+  position: relative;
+  overflow: hidden;
+  min-width: 280px;
 }
 
-@keyframes pulse {
+.islamicDateCard::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.moonCrescent {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  animation: glow 2s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes glow {
   0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 8px 20px rgba(5, 150, 105, 0.3);
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
   }
   50% {
-    transform: scale(1.05);
-    box-shadow: 0 12px 28px rgba(5, 150, 105, 0.4);
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.8));
   }
 }
 
-.title {
+.hijriMain {
   font-size: 1.8rem;
   font-weight: 800;
-  color: #064e3b;
-  margin: 0;
-  letter-spacing: -0.5px;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  position: relative;
+  z-index: 1;
 }
 
-.subtitle {
-  font-size: 0.9rem;
-  color: #059669;
-  margin: 0.25rem 0 0 0;
+.hijriSub {
+  font-size: 1rem;
+  color: #a7f3d0;
   font-weight: 500;
+  position: relative;
+  z-index: 1;
 }
 
-.headerRight {
-  text-align: right;
+.loadingText {
+  font-size: 1rem;
+  color: #a7f3d0;
+  font-style: italic;
 }
 
-.currentTime {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #064e3b;
-  font-family: monospace;
-  margin-bottom: 0.25rem;
-}
-
-.location {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.85rem;
-  color: #6b7280;
-  justify-content: flex-end;
-}
-
-.locationIcon {
-  font-size: 0.9rem;
-}
-
-/* Main Content */
-.mainContent {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-}
-
-@media (min-width: 1024px) {
-  .mainContent {
-    grid-template-columns: 1.5fr 1fr;
-  }
-}
-
-/* Prayer Section */
-.prayerSection {
-  background: linear-gradient(to bottom, #ffffff, #f9fafb);
+/* Time & Date Card */
+.timeDateCard {
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
   padding: 2rem;
   border-radius: 20px;
   border: 2px solid #e5e7eb;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.75rem;
 }
 
-.sectionTitle {
+.liveTime {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #064e3b;
+  font-family: 'Courier New', monospace;
+  letter-spacing: -1px;
+}
+
+.gregorianFull {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.locationBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f0fdf4;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  border: 2px solid #d1fae5;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #064e3b;
+  width: fit-content;
+}
+
+.pinIcon {
+  font-size: 1rem;
+}
+
+/* Ramadan Banner */
+.ramadanBanner {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  padding: 1.5rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(251, 191, 36, 0.3);
+}
+
+.ramadanText {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   font-size: 1.3rem;
   font-weight: 700;
-  color: #064e3b;
-  margin: 0 0 1.5rem 0;
+  color: #78350f;
+  margin-bottom: 1rem;
 }
 
-.sectionIcon {
+.ramadanIcon {
   font-size: 1.5rem;
 }
 
-.prayerGrid {
+.progressTrack {
+  height: 12px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #78350f 0%, #92400e 100%);
+  border-radius: 10px;
+  transition: width 0.5s ease;
+  box-shadow: 0 0 10px rgba(120, 53, 15, 0.5);
+  position: relative;
+}
+
+.progressFill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Dashboard Grid */
+.dashboardGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: 1.5fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Prayer Times Card */
+.prayerTimesCard {
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+  padding: 2rem;
+  border-radius: 24px;
+  border: 2px solid #e5e7eb;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  animation: fadeIn 0.6s ease-out 0.2s backwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.cardTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #064e3b;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.titleIcon {
+  font-size: 1.8rem;
+}
+
+/* Next Prayer Badge */
+.nextPrayerBadge {
+  background: linear-gradient(135deg, #059669, #047857);
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+.nextLabel {
+  font-size: 0.7rem;
+  color: #a7f3d0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+}
+
+.nextName {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.15rem;
+}
+
+.nextTime {
+  font-size: 0.85rem;
+  color: #d1fae5;
+  font-family: monospace;
+}
+
+/* Prayers Grid */
+.prayersGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
 
-.prayerCard {
-  background: linear-gradient(to bottom, #ffffff, #f9fafb);
-  padding: 1.25rem 1rem;
+.prayerItem {
+  background: linear-gradient(to bottom, #f9fafb, #ffffff);
+  padding: 1.5rem;
   border-radius: 16px;
   border: 2px solid #e5e7eb;
   text-align: center;
   transition: all 0.3s ease;
   position: relative;
+  cursor: pointer;
 }
 
-.prayerCard:hover {
+.prayerItem:hover {
   border-color: #059669;
   transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(5, 150, 105, 0.15);
+  box-shadow: 0 8px 24px rgba(5, 150, 105, 0.15);
 }
 
-.prayerCard.highlighted {
+.prayerItem.active {
+  background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+  border-color: #059669;
+  box-shadow: 0 6px 20px rgba(5, 150, 105, 0.2);
+}
+
+.iftarHighlight {
   background: linear-gradient(135deg, #059669, #047857);
   border-color: #047857;
-  box-shadow: 0 8px 24px rgba(5, 150, 105, 0.3);
 }
 
-.prayerCard.highlighted .prayerLabel,
-.prayerCard.highlighted .prayerTime,
-.prayerCard.highlighted .prayerSubtext {
+.iftarHighlight .prayerName,
+.iftarHighlight .prayerTime,
+.iftarHighlight .prayerLabel {
   color: #ffffff;
 }
 
-.prayerLabel {
-  font-size: 0.8rem;
+.prayerIcon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.prayerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.prayerName {
+  font-size: 0.9rem;
   font-weight: 700;
   color: #059669;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 0.5rem;
 }
 
 .prayerTime {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 800;
   color: #064e3b;
   font-family: monospace;
-  margin-bottom: 0.25rem;
 }
 
-.prayerSubtext {
-  font-size: 0.7rem;
+.prayerLabel {
+  font-size: 0.75rem;
   color: #6b7280;
-  font-weight: 500;
 }
 
-.iftarBadge {
+.iftarTag {
   position: absolute;
-  top: -8px;
-  right: -8px;
+  top: -6px;
+  right: -6px;
   background: #fbbf24;
   color: #78350f;
   font-size: 0.65rem;
   font-weight: 700;
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem 0.6rem;
   border-radius: 8px;
-  text-transform: uppercase;
   box-shadow: 0 4px 8px rgba(251, 191, 36, 0.4);
-  animation: bounce 2s ease-in-out infinite;
+  animation: pulse 2s ease-in-out infinite;
 }
 
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
 
-/* Suhoor Reminder */
-.suhoorReminder {
+/* Suhoor Alert */
+.suhoorAlert {
   display: flex;
   align-items: center;
   gap: 1rem;
   background: linear-gradient(to right, #fef3c7, #fde68a);
-  padding: 1rem 1.5rem;
+  padding: 1.25rem 1.5rem;
   border-radius: 12px;
   border: 2px solid #fbbf24;
-  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
 }
 
-.reminderIcon {
-  font-size: 2rem;
-  flex-shrink: 0;
+.alertIcon {
+  font-size: 2.5rem;
 }
 
-.reminderContent {
+.alertContent {
   flex: 1;
 }
 
-.reminderTitle {
-  font-size: 0.75rem;
-  font-weight: 600;
+.alertLabel {
+  font-size: 0.8rem;
   color: #92400e;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-weight: 600;
   margin-bottom: 0.25rem;
 }
 
-.reminderTime {
-  font-size: 1.5rem;
+.alertTime {
+  font-size: 1.6rem;
   font-weight: 800;
   color: #78350f;
   font-family: monospace;
 }
 
-/* Deed Section */
-.deedSection {
+/* Side Column */
+.sideColumn {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.deedHeader {
-  text-align: center;
+/* Deed Card */
+.deedCard {
+  background: linear-gradient(135deg, #fffbeb, #fef3c7);
+  padding: 2rem;
+  border-radius: 20px;
+  border: 2px solid #fde68a;
+  box-shadow: 0 6px 20px rgba(251, 191, 36, 0.15);
+  animation: fadeIn 0.6s ease-out 0.3s backwards;
 }
 
 .deedBadge {
-  display: inline-block;
-  padding: 0.5rem 1.5rem;
-  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   background: linear-gradient(135deg, #fbbf24, #f59e0b);
   color: #78350f;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+  margin-bottom: 1.25rem;
   box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
 }
 
-.deedCard {
-  background: linear-gradient(135deg, #ffffff, #f0fdf4);
-  padding: 2rem;
-  border-radius: 20px;
-  border: 2px solid #d1fae5;
-  box-shadow: 0 8px 24px rgba(5, 150, 105, 0.1);
-  position: relative;
-  animation: float 4s ease-in-out infinite;
+.starIcon {
+  font-size: 1rem;
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.quoteIcon {
-  position: absolute;
-  top: -10px;
-  left: 20px;
-  font-size: 4rem;
-  color: #d1fae5;
-  font-family: Georgia, serif;
-  line-height: 1;
-}
-
-.deedText {
+.deedQuote {
   font-size: 1.3rem;
   font-family: Georgia, serif;
   font-style: italic;
-  color: #1e293b;
+  color: #78350f;
   line-height: 1.8;
-  margin: 1rem 0 1.5rem 0;
+  margin-bottom: 1.25rem;
   text-align: center;
 }
 
@@ -344,117 +460,263 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  padding-top: 1rem;
-  border-top: 1px solid #d1fae5;
-}
-
-.deedEmoji {
-  font-size: 1.25rem;
-}
-
-.deedSubtext {
+  gap: 0.5rem;
   font-size: 0.85rem;
-  color: #059669;
+  color: #92400e;
   font-weight: 600;
-  font-style: italic;
+  padding-top: 1rem;
+  border-top: 2px solid #fde68a;
 }
 
-/* Hadith Quote */
-.hadithQuote {
-  background: linear-gradient(to bottom, #064e3b, #047857);
-  padding: 1.5rem;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: 0 8px 24px rgba(6, 78, 59, 0.3);
+.sparkle {
+  font-size: 1.1rem;
 }
 
-.hadithText {
-  font-size: 1rem;
-  color: #d1fae5;
-  font-style: italic;
-  line-height: 1.7;
-  margin-bottom: 0.75rem;
+/* Hadith Card */
+.hadithCard {
+  background: linear-gradient(135deg, #064e3b, #047857);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(6, 78, 59, 0.4);
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn 0.6s ease-out 0.4s backwards;
+}
+
+.hadithCard::before {
+  content: '"';
+  position: absolute;
+  top: -20px;
+  left: 20px;
+  font-size: 8rem;
+  color: rgba(255, 255, 255, 0.1);
   font-family: Georgia, serif;
 }
 
-.hadithSource {
-  font-size: 0.8rem;
+.hadithIcon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.hadithText {
+  font-size: 1.05rem;
+  color: #d1fae5;
+  font-style: italic;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  font-family: Georgia, serif;
+  position: relative;
+}
+
+.hadithRef {
+  font-size: 0.85rem;
   color: #a7f3d0;
+  font-weight: 600;
+  position: relative;
+}
+
+/* Dhikr Card */
+.dhikrCard {
+  background: linear-gradient(to bottom, #ffffff, #f9fafb);
+  padding: 1.75rem;
+  border-radius: 20px;
+  border: 2px solid #e5e7eb;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  animation: fadeIn 0.6s ease-out 0.5s backwards;
+}
+
+.dhikrTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #064e3b;
+  margin: 0 0 1.25rem 0;
+}
+
+.beadsIcon {
+  font-size: 1.3rem;
+}
+
+.dhikrList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dhikrRow {
+  background: #f9fafb;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 2px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.dhikrRow:hover {
+  border-color: #059669;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.1);
+}
+
+.dhikrArabic {
+  font-size: 1.4rem;
+  color: #064e3b;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  direction: rtl;
+  text-align: right;
+}
+
+.dhikrDetails {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dhikrTrans {
+  font-size: 0.9rem;
+  color: #6b7280;
   font-weight: 600;
 }
 
+.dhikrCount {
+  font-size: 0.85rem;
+  background: #059669;
+  color: white;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-weight: 700;
+}
+
+/* Essentials Section */
+.essentialsSection {
+  background: linear-gradient(135deg, #ffffff, #f9fafb);
+  padding: 2rem;
+  border-radius: 24px;
+  border: 2px solid #e5e7eb;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  animation: fadeIn 0.6s ease-out 0.6s backwards;
+}
+
+.essentialsTitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #064e3b;
+  margin: 0 0 1.5rem 0;
+}
+
+.essIcon {
+  font-size: 1.6rem;
+}
+
+.essentialsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.essentialCard {
+  background: linear-gradient(to bottom, #f9fafb, #ffffff);
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 2px solid #e5e7eb;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.essentialCard:hover {
+  border-color: #059669;
+  transform: translateY(-6px);
+  box-shadow: 0 8px 24px rgba(5, 150, 105, 0.15);
+}
+
+.essentialCard .essIcon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.essTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #064e3b;
+  margin-bottom: 0.5rem;
+}
+
+.essDesc {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
 /* Responsive Design */
+@media (max-width: 1200px) {
+  .dashboardGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .essentialsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
-  .dashboardCard {
-    padding: 1.5rem;
+  .heroContent {
+    grid-template-columns: 1fr;
   }
 
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
+  .islamicDateCard {
+    min-width: auto;
   }
 
-  .headerRight {
-    width: 100%;
-    text-align: left;
+  .liveTime {
+    font-size: 2.5rem;
   }
 
-  .location {
-    justify-content: flex-start;
-  }
-
-  .moonIcon {
-    width: 50px;
-    height: 50px;
-    font-size: 1.5rem;
-  }
-
-  .title {
-    font-size: 1.5rem;
-  }
-
-  .currentTime {
-    font-size: 1.2rem;
-  }
-
-  .prayerSection {
-    padding: 1.5rem;
-  }
-
-  .prayerGrid {
+  .prayersGrid {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .deedText {
-    font-size: 1.1rem;
+  .essentialsGrid {
+    grid-template-columns: 1fr;
   }
 
-  .suhoorReminder {
-    flex-direction: column;
-    text-align: center;
+  .prayerTimesCard,
+  .deedCard,
+  .hadithCard,
+  .dhikrCard,
+  .essentialsSection {
+    padding: 1.5rem;
   }
 }
 
 @media (max-width: 480px) {
+  .pageWrapper {
+    padding: 1rem 0;
+  }
+
   .container {
     padding: 0 1rem;
   }
 
-  .dashboardCard {
-    padding: 1.25rem;
-    border-radius: 16px;
+  .liveTime {
+    font-size: 2rem;
   }
 
-  .prayerGrid {
+  .prayersGrid {
     grid-template-columns: 1fr;
   }
 
-  .title {
-    font-size: 1.3rem;
+  .cardHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
   }
 
-  .deedText {
-    font-size: 1rem;
+  .nextPrayerBadge {
+    width: 100%;
   }
 }
