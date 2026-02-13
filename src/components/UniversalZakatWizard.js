@@ -37,7 +37,10 @@ const UniversalZakatWizard = () => {
   const [totalFieldsFilled, setTotalFieldsFilled] = useState(0);
   const [showChart, setShowChart] = useState(false);
   
-  const [marketTrend] = useState({ gold: 'stable', silver: 'increasing', change: '+1.2%' });
+  const [marketTrend, setMarketTrend] = useState({
+    gold: { direction: 'stable', change: '0%' },
+    silver: { direction: 'stable', change: '0%' }
+  });
   const [fitrCount, setFitrCount] = useState(0);
   const fitrRate = 250;
 
@@ -89,6 +92,10 @@ const UniversalZakatWizard = () => {
         const res = await fetch('/api/metal-prices');
         const data = await res.json();
         setPrices({ gold: data.gold, silver: data.silver });
+        console.log("Pirce: ", data);
+        if (data.marketTrend) {
+          setMarketTrend(data.marketTrend);
+        }
       } catch (e) { console.log("Using Fallback Prices"); }
     };
     fetchRates();
@@ -114,7 +121,7 @@ const UniversalZakatWizard = () => {
       setTimeout(() => {
         setShowConfetti(false);
         setShowFireworks(false);
-      }, 4000);
+      }, 20000);
     }
   }, [step]);
 
@@ -311,11 +318,11 @@ const UniversalZakatWizard = () => {
                     <span className={styles.badgeCustom}>Step 1/4</span>
                   </div>
                   
-                  <div className={styles.trendAlert}>
+                  {/* <div className={styles.trendAlert}>
                     <div className={styles.trendPulse}></div>
                     <span className="me-2">📈</span>
-                    <span><strong>Live Market:</strong> Gold is {marketTrend.gold} • Silver {marketTrend.change}</span>
-                  </div>
+                    <span><strong>Live Market:</strong> Gold is  {marketTrend.gold.direction} ({marketTrend.gold.change}) • Silver is {marketTrend.silver.direction} ({marketTrend.silver.change})</span>
+                  </div> */}
                   
                   {/* Cash Input with Counter Animation */}
                   <div className={`${styles.inputGroup} ${pulsingFields.cash ? styles.pulse : ''}`}>
