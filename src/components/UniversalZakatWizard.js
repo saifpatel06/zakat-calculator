@@ -115,13 +115,7 @@ const UniversalZakatWizard = () => {
 
   useEffect(() => {
     if (step === 4) {
-      setShowConfetti(true);
-      setShowFireworks(true);
       checkAchievements('step', 4);
-      setTimeout(() => {
-        setShowConfetti(false);
-        setShowFireworks(false);
-      }, 20000);
     }
   }, [step]);
 
