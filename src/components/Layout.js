@@ -2,6 +2,7 @@ import Header from './Header';
 import styles from '../../styles/Layout.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
+import ChatbotButton from './Chatbotbutton';
 
 const Layout = ({ children }) => {
   return (
@@ -49,6 +50,7 @@ const Layout = ({ children }) => {
           </p>
         </div>
       </footer>
+      <ChatbotButton />
     </div>
   );
 };
