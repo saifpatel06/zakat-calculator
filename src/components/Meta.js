@@ -41,6 +41,12 @@ const Meta = () => {
       description: 'Share your feedback or report bugs to help improve our Zakat calculator and website.',
       keywords: 'feedback form, bug report, zakat calculator feedback, user feedback, improve zakat calculator'
     },
+    '/ramadan': {
+      title: 'Ramadan 2026 Timings in Pune | Sehri & Iftar Calendar',
+      description: 'Check accurate Ramadan 2026 prayer times in Pune including Sehri (Suhoor), Iftar (Maghrib), Hijri date, and daily Ramadan tracker.',
+      keywords: 'ramadan 2026 pune, ramadan timings pune, sehri iftar time pune, ramadan calendar india, hijri date today pune'
+    },
+
   };
 
   const meta = metaConfig[path || '/'] || {

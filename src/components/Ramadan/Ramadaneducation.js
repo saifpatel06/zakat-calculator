@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styles from '../../../styles/Ramadan/Ramadaneducation.module.css';
 
-const RamadanEducation = () => {
+const RamadanEducation = ({ hijri }) => {
   const [activeTab, setActiveTab] = useState('tips');
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [expandedTerm, setExpandedTerm] = useState(null);
@@ -222,15 +222,16 @@ const RamadanEducation = () => {
 
   // Set daily tip based on date
   useEffect(() => {
-    const dayOfMonth = new Date().getDate();
-    setDailyTip(tips[dayOfMonth % tips.length]);
-  }, []);
+    if (!hijri?.day) return;
 
-  // Set daily hadith based on date
-  useEffect(() => {
-    const dayOfMonth = new Date().getDate();
-    setDailyHadith(hadiths[dayOfMonth % hadiths.length]);
-  }, []);
+    const hijriDay = parseInt(hijri.day);
+
+    const index = (hijriDay + 1) % tips.length;
+
+    setDailyTip(tips[index]);
+    setDailyHadith(hadiths[index % hadiths.length]);
+
+  }, [hijri]);
 
   // Flashcard navigation
   const nextCard = () => {

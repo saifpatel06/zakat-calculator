@@ -311,7 +311,7 @@ const UniversalZakatWizard = () => {
                     <h5 className="fw-bold mb-0 text-success">💰 Personal Assets</h5>
                     <span className={styles.badgeCustom}>Step 1/4</span>
                   </div>
-                  
+                
                   {/* <div className={styles.trendAlert}>
                     <div className={styles.trendPulse}></div>
                     <span className="me-2">📈</span>
