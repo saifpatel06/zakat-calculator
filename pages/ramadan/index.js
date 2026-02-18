@@ -30,7 +30,6 @@ export async function getServerSideProps() {
 
     const timings = timingData.data.timings;
     const maghribTime = timings.Maghrib;
-    console.log("timings: ", timings);
     // Decide Islamic date based on Maghrib
     const now = new Date();
     const [magHr, magMin] = maghribTime.split(':');
