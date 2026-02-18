@@ -13,14 +13,14 @@ const Ramadan = ({ serverTimings, serverHijri }) => {
   );
 };
 
-const PUNE_LAT = 18.5204;
-const PUNE_LON = 73.8567;
+const PUNE_LAT = 18.51957;
+const PUNE_LON = 73.85535;
 
 export async function getServerSideProps() {
   try {
     // Fetch prayer timings
     const timingRes = await fetch(
-      `https://api.aladhan.com/v1/timings?latitude=${PUNE_LAT}&longitude=${PUNE_LON}&method=2`
+      `https://api.aladhan.com/v1/timings?latitude=${PUNE_LAT}&longitude=${PUNE_LON}&method=1`
     );
     const timingData = await timingRes.json();
 
@@ -30,7 +30,7 @@ export async function getServerSideProps() {
 
     const timings = timingData.data.timings;
     const maghribTime = timings.Maghrib;
-
+    console.log("timings: ", timings);
     // Decide Islamic date based on Maghrib
     const now = new Date();
     const [magHr, magMin] = maghribTime.split(':');
