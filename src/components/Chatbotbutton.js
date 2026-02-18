@@ -271,7 +271,14 @@ const ChatbotButton = () => {
 
           {/* Footer */}
           <div className={styles.chatFooter}>
-            <span>🤖 Powered by AI • Zakat Calculator</span>
+            <span>🤖 Powered by AI • ❤️</span>
+            <div style={{
+              fontSize: "11px",
+              marginTop: "4px",
+              color: "#888"
+            }}>
+              ⚠️ This AI provides general guidance. Please consult a qualified Islamic scholar for final rulings.
+            </div>
           </div>
         </div>
       )}

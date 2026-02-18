@@ -10,7 +10,7 @@ export default async function handler(req, res) {
 
     if (!message || message.trim() === "") {
       return res.status(400).json({
-        reply: "Message is required"
+        reply: "Please ask a valid Zakat question."
       });
     }
 
@@ -62,14 +62,26 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    if (!response.ok) {
-      return res.status(500).json({
-        reply: data.error?.message || "Groq API error"
-      });
-    }
+    if (!response.ok || data.error) {
 
-    return res.status(200).json({
-      reply: data.choices[0].message.content
+      console.error("Groq error:", data.error);
+
+      return Response.json({
+        reply:
+          `I'm temporarily unavailable.
+
+          You can calculate your Zakat here:
+          https://zakat-calculator-psi.vercel.app
+
+          If issue continues, please try again later.`
+                });
+              }
+
+              return Response.json({
+                reply:
+                  data.choices?.[0]?.message?.content ||
+                  `You can calculate your Zakat here:
+          https://zakat-calculator-psi.vercel.app`
     });
 
   } catch (error) {
@@ -77,7 +89,11 @@ export default async function handler(req, res) {
     console.error(error);
 
     return res.status(500).json({
-      reply: "Server error"
+      reply:
+        `Server temporarily unavailable.
+
+        Calculate your Zakat here:
+        https://zakat-calculator-psi.vercel.app`
     });
 
   }
