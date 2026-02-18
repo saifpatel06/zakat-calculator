@@ -67,7 +67,6 @@ const handler = async (req, res) => {
 
     // 🔥 Important: store previous BEFORE overwriting cache
     previousData = cachedData;
-    console.log("previousData: ", previousData);
     cachedData = { ...newData, marketTrend };
     lastFetchTime = now;
 
