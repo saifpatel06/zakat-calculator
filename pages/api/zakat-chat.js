@@ -6,8 +6,6 @@ export default async function handler(req, res) {
 
   try {
 
-    console.log("Body received:", req.body);
-
     const message = String(req.body?.message || "");
 
     if (!message || message.trim() === "") {
@@ -63,8 +61,6 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
-
-    console.log("Groq response:", data);
 
     if (!response.ok) {
       return res.status(500).json({
